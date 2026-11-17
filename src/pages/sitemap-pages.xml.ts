@@ -7,7 +7,7 @@ import {siteOrigin} from '../platform/api';
 
 export const prerender = false; // answer per request, on the visitor's host
 
-const PAGES = ['/', '/schedule', '/speakers', '/sponsors', '/gallery', '/about', '/blog', '/contact'];
+const PAGES = ['/', '/coaching', '/agency', '/toolkit', '/about', '/blog', '/contact'];
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 

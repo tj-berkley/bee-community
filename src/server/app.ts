@@ -28,7 +28,7 @@ import {getViewer, getViewerPermissions, grants} from '../platform/viewer';
  *   *    /jobs/...      the job board (Site Database)          routes/jobs.ts
  *   GET  /members      members directory (Community Key)      routes/members.ts
  *   *    /uploads       a member's files (Site Database)       routes/uploads.ts
- *   *    /inbox/...     ticket requests + contact messages     routes/inbox.ts
+ *   *    /inbox/...     contact messages     routes/inbox.ts
  *
  * Add a feature as a new `routes/<name>.ts` and one `.route()` line below,
  * CHAINED so `AppType` carries every route to the typed client. Errors are

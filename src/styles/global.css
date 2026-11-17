@@ -4,39 +4,43 @@
  */
 
 :root {
-  /* Evergreen Editorial (DESIGN.md), light only: the owner asked for a light
-     site throughout, so there is no dark set. */
+  /* BEE Honey & Ink (DESIGN.md), light only: black does the work, the
+     logo's gold is the highlight. */
   color-scheme: light;
 
   --bg: #ffffff;
-  --surface: #f9fafb;
-  --surface-sunken: #f2f4f7;
-  --ink: #101828;
-  --ink-body: #475467;
-  --ink-label: #344054;
-  --muted: #5d6b7e;
-  --placeholder: #98a2b3;
-  --line: #eaecf0;
-  --line-strong: #d0d5dd;
-  --accent: #0e5e59; /* primary teal: buttons, links, focus */
-  --accent-strong: #0a4a46;
+  --surface: #fbf9f4;
+  --surface-sunken: #f4f0e6;
+  --ink: #16130e;
+  --ink-body: #514b40;
+  --ink-label: #3a352c;
+  --muted: #6b6458;
+  --placeholder: #a39c8e;
+  --line: #ede8dd;
+  --line-strong: #d9d1c1;
+  --accent: #16130e; /* primary ink: buttons, links, focus border */
+  --accent-strong: #3a3226;
   --accent-ink: #ffffff;
-  --tint: #e9f3f1;
-  --tint-strong: #d5ece8;
-  --spark: #f06b4f; /* coral: a spark only, never a button */
-  --inverse: #0d2624;
-  --inverse-raised: #143533;
-  --inverse-outline: #3b5f5c;
-  --on-inverse: #f2f7f6;
-  --on-inverse-muted: #a3bab7;
-  --on-inverse-accent: #8fd3ca;
+  --tint: #fdf3d7;
+  --tint-strong: #f9e3a6;
+  --on-tint: #6b4800;
+  --honey: #e8a512; /* the logo's gold: highlights, on-dark buttons, badges */
+  --honey-strong: #f2be3c;
+  --honey-ink: #8a5d00; /* gold as text on light backgrounds (5:1 on white) */
+  --spark: #e8a512;
+  --inverse: #15120c;
+  --inverse-raised: #241f16;
+  --inverse-outline: #4d4433;
+  --on-inverse: #fbf7ee;
+  --on-inverse-muted: #bdb4a2;
+  --on-inverse-accent: #f2be3c;
   --success: #067647;
   --success-bg: #ecfdf3;
   --danger: #b42318;
   --danger-bar: #f04438;
   --danger-bg: #fef3f2;
   --radius: 14px;
-  --focus: 0 0 0 4px rgba(14, 94, 89, 0.18);
+  --focus: 0 0 0 4px rgba(232, 165, 18, 0.35);
   --font: 'Schibsted Grotesk', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 }
 
@@ -1080,6 +1084,9 @@ hr {
 }
 
 .app-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   padding: 0 0.75rem;
   font-weight: 700;
   color: var(--ink);

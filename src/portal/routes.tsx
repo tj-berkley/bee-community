@@ -3,7 +3,6 @@ import {createRootRoute, createRoute, Link, Outlet, useRouterState} from '@tanst
 import {type ChangeEvent, type FormEvent, useState} from 'react';
 
 import {logout, storeFile} from '../platform/browser';
-import {ALL_EVENTS} from '../content/site';
 import {TOPIC_LABELS, type ContactTopic} from '../lib/forms';
 import {
   type Abilities,
@@ -12,7 +11,6 @@ import {
   JOB_TYPES,
   type JobsPage,
   type Member,
-  type TicketRequestsPage,
   type UploadRow as Upload,
   type Viewer,
 } from '../lib/types';
@@ -93,9 +91,8 @@ const NAV_GROUPS: {
     ],
   },
   {
-    label: 'Events',
+    label: 'Inbox',
     items: [
-      {to: '/tickets', label: 'Ticket requests', ability: 'manageInbox'},
       {to: '/messages', label: 'Messages', ability: 'manageInbox'},
     ],
   },
@@ -131,7 +128,8 @@ const rootRoute = createRootRoute({
       <div className="app-shell" data-nav-open={open ? '' : undefined}>
         <aside className="app-sidebar">
           <a className="app-brand" href="/">
-            {site.data?.site?.name ?? 'Community'}
+            <img src="/brand/bee-mark-96.png" alt="" width={28} height={28} />
+            {site.data?.site?.name ?? 'Business Efficiency Experts'}
           </a>
           <nav aria-label="Dashboard" onClick={() => setOpen(false)}>
             {NAV_GROUPS.map(group => {
@@ -756,11 +754,6 @@ const jobsRoute = createRoute({
   },
 });
 
-const eventTitle = (slug: string) => {
-  const event = ALL_EVENTS.find(e => e.slug === slug);
-  return event ? `${event.title} · ${event.city}` : slug;
-};
-
 /** A skeleton while a list loads (no "Loading…" text, DESIGN.md). */
 function SkeletonRows() {
   return (
@@ -771,90 +764,6 @@ function SkeletonRows() {
     </div>
   );
 }
-
-/** Site admins: seats reserved from the website (`/site-api/inbox/tickets`, `MANAGE_INBOX`). */
-const ticketsRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/tickets',
-  component: function Tickets() {
-    const tickets = useInfiniteQuery({
-      queryKey: ['inbox', 'tickets'],
-      initialPageParam: undefined as string | undefined,
-      queryFn: ({pageParam}) =>
-        read<TicketRequestsPage>(api.inbox.tickets.$get({query: {before: pageParam}})),
-      getNextPageParam: last => (last.nextBefore ? String(last.nextBefore) : undefined),
-    });
-    const rows = tickets.data?.pages.flatMap(page => page.tickets) ?? [];
-    return (
-      <div className="app-page">
-        <div className="app-page-head">
-          <div>
-            <h2>Ticket requests</h2>
-            <p className="muted">
-              Seats reserved with “Get your ticket” on the website, newest first. Confirm each one by email.
-            </p>
-          </div>
-          <a className="button ghost" href="/schedule">
-            View events page
-          </a>
-        </div>
-        {tickets.error && <ErrorNote error={tickets.error} />}
-        {tickets.isPending && <SkeletonRows />}
-        {rows.length === 0 && tickets.isSuccess && (
-          <div className="app-empty">
-            <p className="muted">No ticket requests yet. They appear here as soon as someone reserves a seat.</p>
-            <a className="button" href="/#tickets">
-              Open the ticket form
-            </a>
-          </div>
-        )}
-        {rows.length > 0 && (
-          <div className="app-card" style={{overflowX: 'auto'}}>
-            <table className="app-table">
-              <thead>
-                <tr>
-                  <th scope="col">Received</th>
-                  <th scope="col">Event</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Business · trade</th>
-                  <th scope="col">Seats</th>
-                  <th scope="col">Contact</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map(t => (
-                  <tr key={t.id}>
-                    <td>{when(t.createdAt)}</td>
-                    <td>{eventTitle(t.eventSlug)}</td>
-                    <td>{t.name}</td>
-                    <td>
-                      {t.business}
-                      <span className="meta"> · {t.trade}</span>
-                    </td>
-                    <td>{t.seats}</td>
-                    <td>
-                      <a href={`mailto:${t.email}`}>{t.email}</a>
-                      {t.phone && <span className="meta"> · {t.phone}</span>}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-        {tickets.hasNextPage && (
-          <Button
-            variant="ghost"
-            onClick={() => tickets.fetchNextPage()}
-            pending={tickets.isFetchingNextPage}
-            pendingLabel="Loading…">
-            Load more
-          </Button>
-        )}
-      </div>
-    );
-  },
-});
 
 /** Site admins: contact-page messages (`/site-api/inbox/contact`, `MANAGE_INBOX`). */
 const messagesRoute = createRoute({
@@ -925,7 +834,6 @@ export const routeTree = rootRoute.addChildren([
   overviewRoute,
   uploadsRoute,
   membersRoute,
-  ticketsRoute,
   messagesRoute,
   jobsRoute,
 ]);

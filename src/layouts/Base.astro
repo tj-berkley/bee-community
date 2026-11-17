@@ -10,9 +10,8 @@
 import '../styles/global.css';
 import '../styles/site.css';
 
-import BrandMark from '../components/BrandMark.astro';
 import Icon from '../components/Icon.astro';
-import {NAV, UPCOMING} from '../content/site';
+import {BRAND, NAV, PHOTOS} from '../content/site';
 import type {Site, Viewer} from '../lib/types';
 import {initials} from '../lib/format';
 import {siteOrigin} from '../platform/api';
@@ -34,19 +33,18 @@ interface Props {
   isStatic?: boolean;
 }
 
-const DEFAULT_DESCRIPTION =
-  'Breakfasts, workshops and info nights for Missouri’s local service businesses, hosted by Saving America Money.';
-const DEFAULT_IMAGE = 'https://images.unsplash.com/photo-1591115765373-5207764f72e7?auto=format&fit=crop&w=1200&q=70';
+const DEFAULT_DESCRIPTION = BRAND.description;
+const DEFAULT_IMAGE = PHOTOS.success;
 
 const {site, viewer, title, description = DEFAULT_DESCRIPTION, image = DEFAULT_IMAGE, isStatic = false} = Astro.props;
-const name = site?.name ?? 'Saving America Money';
-const fullTitle = title ? `${title} · ${name}` : `${name} · Events for local pros`;
+// The BEE brand is fixed in code (logo, name); the platform's name is only a fallback.
+const name = BRAND.name || site?.name || 'Business Efficiency Experts';
+const fullTitle = title ? `${title} · ${name}` : `${name} (${BRAND.short}) · ${BRAND.tagline}`;
 const path = Astro.url.pathname;
 const canonical = new URL(path, siteOrigin(Astro.url)).href;
 const active = (href: string) => (href === '/' ? path === '/' : path === href || path.startsWith(`${href}/`));
 // Back to this page after signing in. A PATH only: the App ignores full URLs.
 const back = encodeURIComponent(`${path}${Astro.url.search}`);
-const ticketHref = UPCOMING.length ? '/#tickets' : '/schedule';
 ---
 
 <!doctype html>
@@ -65,7 +63,9 @@ const ticketHref = UPCOMING.length ? '/#tickets' : '/schedule';
     {image && <meta property="og:image" content={image} />}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="theme-color" content="#ffffff" />
-    {site?.favIcon && <link rel="icon" href={site.favIcon} />}
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/brand/favicon-192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -75,8 +75,11 @@ const ticketHref = UPCOMING.length ? '/#tickets' : '/schedule';
     <header class="site-header">
       <div class="wrap site-header-inner">
         <a href="/" class="brand" aria-label={`${name} home`}>
-          {site?.logo && <BrandMark site={site} size={34} />}
-          <span class="brand-name" data-brand-text="{name}" data-built-name={name}>{name}</span><span class="brand-dot" aria-hidden="true"></span>
+          <img class="brand-logo-img" src="/brand/bee-mark-96.png" alt="" width="40" height="40" />
+          <span class="brand-text">
+            <span class="brand-name">{BRAND.short}</span>
+            <span class="brand-sub">{name}</span>
+          </span>
         </a>
         <nav class="site-nav" aria-label="Main">
           {NAV.map(item => (
@@ -124,7 +127,7 @@ const ticketHref = UPCOMING.length ? '/#tickets' : '/schedule';
             </>
           )}
         </div>
-        <a class="button header-cta" href={ticketHref}>Get tickets</a>
+        <a class="button header-cta" href={BRAND.callHref}>Book a call</a>
         </div>
         <button class="menu-button" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu" data-menu-button>
           <Icon name="menu" class="menu-open" />
@@ -141,7 +144,7 @@ const ticketHref = UPCOMING.length ? '/#tickets' : '/schedule';
           ))}
         </nav>
         <div class="button-row">
-          <a class="button lg" href={ticketHref}>Get tickets</a>
+          <a class="button lg" href={BRAND.callHref}>Book a strategy call</a>
         </div>
         <div class="button-row" data-guest-only hidden={viewer.state !== 'guest' && viewer.state !== 'returning'}>
           <a class="button secondary" href={`/login?redirectTo=${back}`}>Log in</a>
@@ -163,38 +166,40 @@ const ticketHref = UPCOMING.length ? '/#tickets' : '/schedule';
         <div class="footer-grid">
           <div class="footer-brand">
             <a href="/" class="brand">
-              <span class="brand-name" data-brand-text="{name}">{name}</span><span class="brand-dot" aria-hidden="true"></span>
+              <img class="brand-logo-img" src="/brand/bee-mark-96.png" alt="" width="40" height="40" />
+              <span class="brand-text">
+                <span class="brand-name">{BRAND.short}</span>
+                <span class="brand-sub">{name}</span>
+              </span>
             </a>
-            <p>Morning meetups for the local pros who keep Missouri running, from the team behind the premium 9×12 co-op postcard.</p>
+            <p>{BRAND.footer}</p>
           </div>
           <div class="footer-cols">
-            <nav class="footer-col" aria-labelledby="f-events">
-              <h2 id="f-events">Events</h2>
-              <a href="/schedule">Upcoming events</a>
-              <a href="/schedule#past">Past events</a>
-              <a href={ticketHref}>Get tickets</a>
-              <a href="/speakers">Speakers</a>
-              <a href="/gallery">Gallery</a>
+            <nav class="footer-col" aria-labelledby="f-programs">
+              <h2 id="f-programs">Programs</h2>
+              <a href="/coaching">Business coaching</a>
+              <a href="/agency">Build your agency</a>
+              <a href="/toolkit">The toolkit</a>
+              <a href={BRAND.callHref}>Book a strategy call</a>
             </nav>
             <nav class="footer-col" aria-labelledby="f-company">
               <h2 id="f-company">Company</h2>
               <a href="/">Home</a>
               <a href="/about">About</a>
-              <a href="/sponsors">Sponsors</a>
               <a href="/blog">Blog</a>
               <a href="/contact">Contact</a>
             </nav>
             <nav class="footer-col" aria-labelledby="f-community">
               <h2 id="f-community">Community</h2>
-              <a href="/join">Join</a>
+              <a href="/join">Join BEE</a>
               <a href={`/login?redirectTo=${back}`}>Log in</a>
               <a href="/feeds">Community feed</a>
             </nav>
           </div>
         </div>
         <div class="footer-base">
-          <span data-brand-text="© {year} {name}">© {new Date().getUTCFullYear()} {name}</span>
-          <span>Made in Missouri for local pros.</span>
+          <span>© {new Date().getUTCFullYear()} {name}</span>
+          <span>{BRAND.tagline}</span>
         </div>
       </div>
     </footer>

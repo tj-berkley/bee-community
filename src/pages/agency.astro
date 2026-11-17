@@ -1,0 +1,110 @@
+---
+/** Build your own agency: what to sell, the steps, what is included. PRERENDERED. */
+import CtaBand from '../components/CtaBand.astro';
+import Faq from '../components/Faq.astro';
+import Icon from '../components/Icon.astro';
+import {AGENCY, BRAND, PHOTOS} from '../content/site';
+import Base from '../layouts/Base.astro';
+import {staticContext} from '../server/page';
+
+export const prerender = true;
+
+const {site, viewer} = await staticContext(Astro.request);
+---
+
+<Base site={site} viewer={viewer} isStatic title="Build your own agency" description={AGENCY.lede} image={PHOTOS.team}>
+  <main>
+    <section class="section" style="padding-block-start: 96px">
+      <div class="wrap hero-split">
+        <div class="stack">
+          <p class="kicker">Build your own agency</p>
+          <h1 class="t-page">{AGENCY.title}</h1>
+          <p class="t-lead">{AGENCY.lede}</p>
+          <div class="button-row">
+            <a class="button lg" href="/join" data-guest-only>Start your agency <Icon name="arrow" /></a>
+            <a class="button lg" href="/feeds" data-member-only hidden>Open the community <Icon name="arrow" /></a>
+            <a class="button lg secondary" href={`/contact?topic=agency`}>Ask about the program</a>
+          </div>
+        </div>
+        <div class="hero-media">
+          <div class="frame">
+            <img src={PHOTOS.team} alt="A small team working on laptops around a shared table" width="1400" height="934" fetchpriority="high" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band section secondary">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="stack">
+            <p class="kicker">Your services</p>
+            <h2 class="t-heading">{AGENCY.services.title}</h2>
+          </div>
+          <p class="t-lead">{AGENCY.services.lead}</p>
+        </div>
+        <div class="rule-grid">
+          {
+            AGENCY.services.items.map(item => (
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="section secondary">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="stack">
+            <p class="kicker">Five steps</p>
+            <h2 class="t-heading">{AGENCY.steps.title}</h2>
+          </div>
+        </div>
+        <div class="step-row">
+          {
+            AGENCY.steps.items.map((item, i) => (
+              <div>
+                <span class="rule-num">0{i + 1}</span>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="section secondary" style="padding-block-start: 0">
+      <div class="wrap">
+        <article class="tier featured" style="max-width: 760px; margin-inline: auto">
+          <div class="button-row" style="justify-content: space-between; align-items: center">
+            <h3>What’s included</h3>
+            <span class="badge spark">Agency program</span>
+          </div>
+          <ul>
+            {
+              AGENCY.included.map(item => (
+                <li>
+                  <Icon name="check" />
+                  {item}
+                </li>
+              ))
+            }
+          </ul>
+          <div class="button-row">
+            <a class="button lg on-dark" href="/join" data-guest-only>Join BEE</a>
+            <a class="button lg outline-dark" href={BRAND.callHref}>Book a strategy call</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <Faq items={AGENCY.faq} />
+
+    <CtaBand title="Your agency, your brand, our playbook" body="Join BEE and launch an agency that runs on platforms doing most of the work." />
+  </main>
+</Base>

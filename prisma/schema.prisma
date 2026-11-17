@@ -72,16 +72,15 @@ model Upload {
   @@map("uploads")
 }
 
-/// A visitor asking for a seat at an event ("Get your ticket"). Public form on
-/// `/` and `/schedule`; site admins read them in `/portal/inbox`. The event is
-/// referenced by its slug from `src/content/site.ts` (events live in code).
+/// RETIRED with the old events site: nothing writes or reads this table any
+/// more. Kept because dropping it needs a migration and the owner's approval.
 model TicketRequest {
   id        Int      @id @default(autoincrement())
   eventSlug String   @map("event_slug") @db.VarChar(80)
   name      String   @db.VarChar(80)
   business  String   @db.VarChar(120)
   trade     String   @db.VarChar(60)
-  /// What the visitor typed so the team can confirm the seat. Shown only to
+  /// What the visitor typed so the team could confirm the seat. Shown only to
   /// site admins; never a member's account email.
   email     String   @db.VarChar(160)
   phone     String   @default("") @db.VarChar(30)
@@ -95,7 +94,7 @@ model TicketRequest {
 /// `/portal/inbox`.
 model ContactMessage {
   id        Int      @id @default(autoincrement())
-  /// `general`, `speaking`, `sponsoring`, `advertising` or `licensing`.
+  /// One of `CONTACT_TOPICS` (`src/lib/forms.ts`); older rows may hold retired topics.
   topic     String   @default("general") @db.VarChar(20)
   name      String   @db.VarChar(80)
   /// What the visitor typed so the team can reply. Shown only to site admins.

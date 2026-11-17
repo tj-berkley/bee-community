@@ -1,0 +1,33 @@
+---
+/** One of BEE's four platforms, as a card linking to its detail on /toolkit. */
+import type {Tool} from '../content/site';
+import Icon from './Icon.astro';
+
+interface Props {
+  tool: Tool;
+}
+
+const {tool} = Astro.props;
+---
+
+<article class="tool">
+  <div class="tool-head">
+    <span class="icon-tile"><Icon name={tool.icon} /></span>
+    <span class="badge">{tool.role}</span>
+  </div>
+  <h3 class="t-card">{tool.name}</h3>
+  <p>{tool.body}</p>
+  <ul class="check-list">
+    {
+      tool.points.map(point => (
+        <li>
+          <Icon name="check" />
+          {point}
+        </li>
+      ))
+    }
+  </ul>
+  <a class="text-link" href={`/toolkit#${tool.slug}`}>
+    How {tool.name} works <Icon name="arrow" />
+  </a>
+</article>

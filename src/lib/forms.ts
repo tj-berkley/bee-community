@@ -1,23 +1,22 @@
 /**
- * The ticket and contact forms' rules, shared by the browser (in-place
- * errors) and the Site API (`src/server/routes/inbox.ts`), so both enforce
- * exactly the same limits. Pure functions: no DOM, no server code.
+ * The contact form's rules, shared by the browser (in-place errors) and the
+ * Site API (`src/server/routes/inbox.ts`), so both enforce exactly the same
+ * limits. Pure functions: no DOM, no server code.
  */
 
-export const CONTACT_TOPICS = ['general', 'event', 'speaking', 'sponsoring', 'advertising', 'licensing'] as const;
+export const CONTACT_TOPICS = ['general', 'strategy', 'coaching', 'agency', 'tools', 'partnership'] as const;
 export type ContactTopic = (typeof CONTACT_TOPICS)[number];
 
 export const TOPIC_LABELS: Record<ContactTopic, string> = {
   general: 'A general question',
-  event: 'An event or my seat',
-  speaking: 'Speaking at an event',
-  sponsoring: 'Sponsoring an event',
-  advertising: 'A spot on the 9×12 card',
-  licensing: 'Becoming a licensee',
+  strategy: 'Booking a strategy call',
+  coaching: 'Business coaching',
+  agency: 'Building my own agency',
+  tools: 'Choosing and setting up the tools',
+  partnership: 'A partnership',
 };
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-const PHONE = /^[0-9+().\-\s]{7,30}$/;
 
 /** One rule: returns the message to show, or null when the value is fine. */
 type Rule = (value: string) => string | null;
@@ -28,19 +27,14 @@ const min = (n: number, label: string): Rule => v => (v.trim() && v.trim().lengt
 
 export const FIELD_RULES: Record<string, Rule[]> = {
   name: [required('your name'), max(80, 'your name')],
-  business: [required('your business name'), max(120, 'the business name')],
   businessOptional: [max(120, 'the business name')],
-  trade: [required('your trade, e.g. plumbing or real estate'), max(60, 'the trade')],
   email: [
     required('an email address'),
     max(160, 'the email'),
     v => (v.trim() && !EMAIL.test(v.trim()) ? 'Use an address like name@example.com.' : null),
   ],
-  phone: [v => (v.trim() && !PHONE.test(v.trim()) ? 'Use digits, spaces, dashes or + only, e.g. 314-555-0100.' : null)],
-  seats: [v => (/^[1-4]$/.test(v) ? null : 'Choose 1 to 4 seats.')],
   message: [required('a message'), min(10, 'your message'), max(4000, 'your message')],
   topic: [v => ((CONTACT_TOPICS as readonly string[]).includes(v) ? null : 'Choose what your message is about.')],
-  event: [v => (v ? null : 'Choose an event.')],
 };
 
 /** The first problem with `value` under `rule`, or null. */

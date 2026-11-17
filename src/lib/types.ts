@@ -73,7 +73,7 @@ export interface JobsPage {
 /** What the visitor may do on THIS site (derived from their Role Manager codenames). */
 export interface Abilities {
   manageJobs: boolean;
-  /** Read ticket requests and contact messages (`/portal/inbox`). */
+  /** Read contact messages (`/portal/messages`). */
   manageInbox: boolean;
 }
 
@@ -92,24 +92,6 @@ export interface UploadRow {
   fileType: string;
   fileSize: number;
   createdAt: string;
-}
-
-/** A "Get your ticket" request (`ticket_requests`), as site admins see it. */
-export interface TicketRequestRow {
-  id: number;
-  eventSlug: string;
-  name: string;
-  business: string;
-  trade: string;
-  email: string;
-  phone: string;
-  seats: number;
-  createdAt: string;
-}
-
-export interface TicketRequestsPage {
-  tickets: TicketRequestRow[];
-  nextBefore: number | null;
 }
 
 /** A contact-page message (`contact_messages`), as site admins see it. */

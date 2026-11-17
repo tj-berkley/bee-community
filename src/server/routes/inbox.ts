@@ -1,23 +1,20 @@
 import {Hono} from 'hono';
 import {validator} from 'hono/validator';
 
-import {UPCOMING} from '../../content/site';
 import {check, type ContactTopic} from '../../lib/forms';
-import type {ContactMessagesPage, TicketRequestsPage} from '../../lib/types';
+import type {ContactMessagesPage} from '../../lib/types';
 import {problem, requireMember, requirePermission, withDb, withViewer} from '../../platform/guards';
 import {CODENAMES} from '../../platform/permissions';
 
 /**
  * The site's inbox, stored in the Site Database.
  *
- * Public (the forms on `/`, `/schedule` and `/contact`; `sameOrigin` refuses
+ * Public (the form on `/contact`; `sameOrigin` refuses
  * cross-site posts, a hidden `website` field catches simple bots):
- *   POST /site-api/inbox/tickets     reserve seats at an upcoming event
  *   POST /site-api/inbox/contact     send a message
  *
  * Site admins (`MANAGE_INBOX`), from `/portal/inbox`:
- *   GET /site-api/inbox/tickets?before=    newest first, keyset-paged
- *   GET /site-api/inbox/contact?before=
+ *   GET /site-api/inbox/contact?before=    newest first, keyset-paged
  *
  * Field limits come from `src/lib/forms.ts`, the same rules the forms show.
  */
@@ -60,16 +57,6 @@ function body(fields: Record<string, string>) {
   });
 }
 
-const ticketBody = body({
-  event: 'event',
-  name: 'name',
-  business: 'business',
-  trade: 'trade',
-  email: 'email',
-  phone: 'phone',
-  seats: 'seats',
-});
-
 const contactBody = body({
   topic: 'topic',
   name: 'name',
@@ -80,29 +67,6 @@ const contactBody = body({
 
 export const inboxRoutes = new Hono()
   // ---- public ---------------------------------------------------------------
-  .post('/tickets', ticketBody, withDb, async c => {
-    const {bot, fields: input} = c.req.valid('json');
-    if (bot) return c.json({ok: true}, 201);
-    // Only events that are still upcoming take reservations.
-    const event = UPCOMING.find(e => e.slug === input.event && new Date(e.start).getTime() > Date.now());
-    if (!event) {
-      return c.json({...problem('invalid_field', 'That event is no longer taking reservations. Choose another.'), field: 'event'}, 422);
-    }
-    await c.var.db.ticketRequest.create({
-      data: {
-        eventSlug: event.slug,
-        name: input.name,
-        business: input.business,
-        trade: input.trade,
-        email: input.email,
-        phone: input.phone,
-        seats: Number(input.seats),
-      },
-      select: {id: true},
-    });
-    return c.json({ok: true}, 201);
-  })
-
   .post('/contact', contactBody, withDb, async c => {
     const {bot, fields: input} = c.req.valid('json');
     if (bot) return c.json({ok: true}, 201);
@@ -120,22 +84,6 @@ export const inboxRoutes = new Hono()
   })
 
   // ---- site admins ------------------------------------------------------------
-  .get('/tickets', pageQuery, withViewer, requireMember, requirePermission(MANAGE_INBOX), withDb, async c => {
-    const cursor = cursorOf(c.req.valid('query').before);
-    const rows = await c.var.db.ticketRequest.findMany({
-      select: {id: true, eventSlug: true, name: true, business: true, trade: true, email: true, phone: true, seats: true, createdAt: true},
-      where: cursor ? {id: {lt: cursor}} : undefined,
-      orderBy: {id: 'desc'},
-      take: PAGE_SIZE + 1,
-    });
-    const tickets = rows.slice(0, PAGE_SIZE);
-    const page: TicketRequestsPage = {
-      tickets: tickets.map(row => ({...row, createdAt: row.createdAt.toISOString()})),
-      nextBefore: rows.length > PAGE_SIZE ? tickets.at(-1)!.id : null,
-    };
-    return c.json(page);
-  })
-
   .get('/contact', pageQuery, withViewer, requireMember, requirePermission(MANAGE_INBOX), withDb, async c => {
     const cursor = cursorOf(c.req.valid('query').before);
     const rows = await c.var.db.contactMessage.findMany({

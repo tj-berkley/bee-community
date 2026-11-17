@@ -1,14 +1,10 @@
 /**
- * The site's own words: navigation, events, speakers, sponsors, gallery and
- * page copy. Edit freely.
+ * The site's own words: brand, navigation and every page's copy. Edit freely.
  *
- * The community's NAME and LOGO are not here: they come from the platform
- * (`GET /site-api/site`). Use `{name}` in any string for the community name.
- *
- * ✎ Anything marked `MADE UP` is a believable placeholder written for the
- *   first version: dates, venues, prices, speakers, attendee numbers,
- *   testimonials and sponsors. Replace each one with the real thing.
- *   Search this file for "MADE UP" to find them all.
+ * ✎ Program details (what coaching includes, how the agency path works) are
+ *   a first draft written from the features of BEE’s four platforms. Search
+ *   this file for "EDIT" to find the parts to check against your real offer.
+ *   Prices, testimonials and results are deliberately left out: add real ones.
  */
 
 export interface NavItem {
@@ -16,481 +12,321 @@ export interface NavItem {
   href: string;
 }
 
-/**
- * Header and footer navigation. Every href is a page of THIS site. `/events`
- * belongs to the community app, so the events page lives at `/schedule`.
- */
+export const BRAND = {
+  name: 'Business Efficiency Experts',
+  short: 'BEE',
+  tagline: 'Work smarter. Grow faster.',
+  description:
+    'Business Efficiency Experts (BEE) is a coaching program and community that helps owners run leaner with AI and build their own agency, with BEE’s own marketing, coaching, community and content platforms.',
+  footer: 'Coaching, community and an AI-powered toolkit for owners who want to save time, cut costs and grow.',
+  /** Every "Book a strategy call" button. */
+  callHref: '/contact?topic=strategy',
+};
+
+/** Header and footer navigation. Every href is a page of THIS site. */
 export const NAV: NavItem[] = [
-  {label: 'Events', href: '/schedule'},
-  {label: 'Speakers', href: '/speakers'},
-  {label: 'Sponsors', href: '/sponsors'},
-  {label: 'Gallery', href: '/gallery'},
+  {label: 'Coaching', href: '/coaching'},
+  {label: 'Agency', href: '/agency'},
+  {label: 'Toolkit', href: '/toolkit'},
   {label: 'About', href: '/about'},
   {label: 'Blog', href: '/blog'},
   {label: 'Contact', href: '/contact'},
 ];
 
-/** Photos are Unsplash stand-ins: swap them for photos from your own events. */
+/** Photos are Unsplash stand-ins: swap them for photos of your own team and members. */
 const unsplash = (id: string, w = 1400) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=70`;
 
 export const PHOTOS = {
-  workshop: unsplash('1591115765373-5207764f72e7'),
-  audience: unsplash('1515187029135-18ee286d815b'),
-  tables: unsplash('1528605248644-14dd04022da1'),
-  stage: unsplash('1505373877841-8d25f7d46678'),
-  room: unsplash('1511578314322-379afb476865'),
-  crowd: unsplash('1531058020387-3be344556be6'),
+  /** Two colleagues high-fiving at a desk with a laptop. */
+  success: unsplash('1600880292203-757bb62b4baf'),
+  /** A team working on laptops around a shared table. */
+  team: unsplash('1522071820081-009f0129c71c'),
+  /** A woman leading a whiteboard session covered in sticky notes. */
+  workshop: unsplash('1552664730-d307ca884978'),
+  /** People with notebooks around a wooden meeting table. */
   meeting: unsplash('1517048676732-d65bc937f952'),
-  deal: unsplash('1600880292203-757bb62b4baf'),
-  coffee: unsplash('1495474472287-4d71bcdd2085'),
-  listening: unsplash('1540575467063-178a50c2df87'),
-  mic: unsplash('1475721027785-f74eccf877e2'),
-  chat: unsplash('1543269865-cbf427effbad'),
+  /** A team meeting with laptops in a bright room. */
+  boardroom: unsplash('1521737604893-d14cc237f11d'),
+  /** A laptop showing a business analytics dashboard. */
+  dashboard: unsplash('1460925895917-afdab827c52f'),
+  /** Four people smiling around a table, looking at a phone together. */
+  community: unsplash('1543269865-cbf427effbad'),
 };
 
-// ---------------------------------------------------------------- events --
+// --------------------------------------------------------------- toolkit --
 
-export interface AgendaItem {
-  time: string;
-  title: string;
-}
-
-export interface EventItem {
-  slug: string;
-  title: string;
-  /** The format, shown as a badge. */
-  kind: 'Breakfast' | 'Workshop' | 'Info night' | 'Online';
-  /** ISO date-time WITH the offset (Missouri is UTC−6 in winter, −5 in summer). */
-  start: string;
-  /** Shown as written, e.g. "7:30 – 9:30 AM". */
-  time: string;
-  venue: string;
-  city: string;
-  /** Shown as written: "$25", "Free". */
-  price: string;
-  priceNote: string;
-  /** Who it is for, one line. */
-  audience: string;
-  summary: string;
-  speakers: string[]; // speaker slugs
-  agenda?: AgendaItem[];
-  photo: string;
-  /** Past events only. */
-  attendees?: number;
-  highlight?: string;
-}
-
-/**
- * Upcoming events, soonest first. The first one is "the next event" on the
- * home page (title, countdown and the ticket form).
- */
-export const UPCOMING: EventItem[] = [
-  {
-    // MADE UP: date, venue, price and agenda.
-    slug: 'competitor-blackout-stl',
-    title: 'The Competitor Blackout',
-    kind: 'Breakfast',
-    start: '2026-12-03T07:30:00-06:00',
-    time: '7:30 – 9:30 AM',
-    venue: 'The Loft at Clayton Commons',
-    city: 'Clayton, MO (St. Louis)',
-    price: '$25',
-    priceNote: 'Hot breakfast and coffee included. Pay at the door.',
-    audience: 'Owners of plumbing, HVAC, roofing, real estate, med spa and other local service businesses',
-    summary:
-      'How category exclusivity locks your competitors out of 10,000 mailboxes, and what it looks like when a route fills up. Bring your questions, your business cards and your toughest marketing story.',
-    speakers: ['marcus-hale', 'renee-calloway', 'tony-brandt'],
-    agenda: [
-      {time: '7:30', title: 'Doors, hot breakfast and open networking'},
-      {time: '8:00', title: 'The Competitor Blackout: one business per trade, per route'},
-      {time: '8:25', title: 'Anchor panel: why a top Realtor puts her name on the card'},
-      {time: '8:50', title: 'Live teardown: three real 9×12 cards, what worked and why'},
-      {time: '9:10', title: 'Route check: is your trade still open in your ZIP?'},
-    ],
-    photo: PHOTOS.workshop,
-  },
-  {
-    // MADE UP
-    slug: 'postcard-teardown-kc',
-    title: 'Postcard Teardown Workshop',
-    kind: 'Workshop',
-    start: '2027-01-14T08:00:00-06:00',
-    time: '8:00 – 10:30 AM',
-    venue: 'Crossroads Commons, second floor',
-    city: 'Kansas City, MO',
-    price: '$35',
-    priceNote: 'Includes breakfast and a printed ad-copy worksheet.',
-    audience: 'Owners who already mail, or want to, and want ads that make the phone ring',
-    summary:
-      'Bring your current ad, flyer or door hanger. We rebuild it live for a 9×12 card: one offer, one phone number, one QR code, and a headline a homeowner reads in two seconds.',
-    speakers: ['marcus-hale', 'tony-brandt'],
-    photo: PHOTOS.meeting,
-  },
-  {
-    // MADE UP
-    slug: 'licensee-info-night-online',
-    title: 'Licensee Info Night',
-    kind: 'Online',
-    start: '2027-01-28T18:30:00-06:00',
-    time: '6:30 – 7:30 PM (Central)',
-    venue: 'Live online, link sent after you reserve',
-    city: 'Online',
-    price: 'Free',
-    priceNote: 'Seats are limited so everyone can ask questions.',
-    audience: 'Entrepreneurs, sales professionals and marketers who want their own local marketing business',
-    summary:
-      'How a Saving America Money territory works: selling a 12-spot card and directory listings, what a full card grosses against what it costs to mail, and what support looks like in your first 90 days.',
-    speakers: ['alicia-moreno', 'marcus-hale'],
-    photo: PHOTOS.deal,
-  },
-  {
-    // MADE UP
-    slug: 'premium-neighbor-sgf',
-    title: 'The Premium Neighbor Effect',
-    kind: 'Breakfast',
-    start: '2027-02-11T07:30:00-06:00',
-    time: '7:30 – 9:00 AM',
-    venue: 'Downtown Event Hall',
-    city: 'Springfield, MO',
-    price: '$25',
-    priceNote: 'Hot breakfast and coffee included. Pay at the door.',
-    audience: 'Local service businesses in the Springfield area',
-    summary:
-      'Why homeowners toss coupon envelopes but keep a curated card, and how sitting beside trusted local names makes your business look like one of them.',
-    speakers: ['renee-calloway', 'marcus-hale'],
-    photo: PHOTOS.tables,
-  },
-];
-
-/** Past events, newest first. */
-export const PAST: EventItem[] = [
-  {
-    // MADE UP: date, venue and attendee numbers.
-    slug: 'premium-neighbor-kc',
-    title: 'The Premium Neighbor Effect',
-    kind: 'Breakfast',
-    start: '2026-10-15T07:30:00-05:00',
-    time: '7:30 – 9:30 AM',
-    venue: 'Crossroads Commons',
-    city: 'Kansas City, MO',
-    price: '$25',
-    priceNote: '',
-    audience: 'Local service business owners',
-    summary: 'A full room of Kansas City trades and a panel on what a premium card says about the businesses on it.',
-    speakers: ['renee-calloway', 'marcus-hale'],
-    photo: PHOTOS.audience,
-    attendees: 61,
-    highlight: 'Four trades claimed their route before the coffee ran out.',
-  },
-  {
-    // MADE UP
-    slug: 'licensee-info-night-columbia',
-    title: 'Licensee Info Night',
-    kind: 'Info night',
-    start: '2026-10-01T18:30:00-05:00',
-    time: '6:30 – 8:00 PM',
-    venue: 'Broadway Business Center',
-    city: 'Columbia, MO',
-    price: 'Free',
-    priceNote: '',
-    audience: 'Aspiring local marketing business owners',
-    summary: 'The first in-person walk-through of the licensing model, with a full Q&A on territories and margins.',
-    speakers: ['alicia-moreno'],
-    photo: PHOTOS.meeting,
-    attendees: 22,
-    highlight: 'Questions ran 40 minutes past the scheduled end.',
-  },
-  {
-    // MADE UP
-    slug: 'nine-cent-takeover-stl',
-    title: 'The 9-Cent Neighborhood Takeover',
-    kind: 'Breakfast',
-    start: '2026-09-17T07:30:00-05:00',
-    time: '7:30 – 9:30 AM',
-    venue: 'The Loft at Clayton Commons',
-    city: 'Clayton, MO (St. Louis)',
-    price: '$25',
-    priceNote: '',
-    audience: 'Local service business owners',
-    summary: 'Our launch breakfast: how 12 local pros share one premium 9×12 card and reach 10,000 homes for about 9 cents a household each.',
-    speakers: ['marcus-hale', 'tony-brandt'],
-    photo: PHOTOS.workshop,
-    attendees: 48,
-    highlight: 'The first St. Louis route was anchored by a local Realtor that morning.',
-  },
-];
-
-export const ALL_EVENTS = [...UPCOMING, ...PAST];
-
-/** MADE UP: running totals for the stat strip. Keep in step with PAST. */
-export const STATS = [
-  {value: '130+', label: 'Business owners at our events so far'},
-  {value: '3', label: 'Missouri cities, with more routes coming'},
-  {value: '10,000', label: 'Homes reached by every card we mail'},
-  {value: '1', label: 'Business per trade, per route. Always.'},
-];
-
-// -------------------------------------------------------------- speakers --
-
-export interface Speaker {
+export interface Tool {
   slug: string;
   name: string;
   role: string;
-  photo: string;
-  bio: string;
-  talk: string;
+  icon: 'trending' | 'target' | 'users' | 'zap';
+  /** One line for cards. */
+  body: string;
+  points: string[];
+  /** The toolkit page. */
+  replaces: string;
+  useFor: string[];
 }
 
-/** MADE UP: every name, role, bio and photo here is a stand-in. */
-export const SPEAKERS: Speaker[] = [
+/** BEE’s four platforms, offered under the BEE brand. Rename them here. */
+export const TOOLS: Tool[] = [
   {
-    slug: 'marcus-hale',
-    name: 'Marcus Hale',
-    role: 'Founder, Saving America Money',
-    photo: unsplash('1560250097-0b93528c311a', 600),
-    bio: 'Built Saving America Money after watching good local trades lose to louder competitors. Hosts every breakfast and still answers the route-check calls himself.',
-    talk: 'The 9-Cent Neighborhood Takeover',
-  },
-  {
-    slug: 'renee-calloway',
-    name: 'Renee Calloway',
-    role: 'Anchor Realtor, St. Louis route',
-    photo: unsplash('1573496359142-b8d87734a5a2', 600),
-    bio: 'Top-producing agent and the anchor ad on the first St. Louis card. Talks about why she puts her name next to other local pros, and what homeowners say when they call.',
-    talk: 'Why I Anchor the Card',
-  },
-  {
-    slug: 'tony-brandt',
-    name: 'Tony Brandt',
-    role: 'Owner, Brandt Heating & Air',
-    photo: unsplash('1507003211169-0a1dd7228f2d', 600),
-    bio: 'Second-generation HVAC owner. Tried coupon packs, priced a solo mailer, then took the HVAC spot on his home route. Shares his tracked calls and scans, good weeks and slow ones.',
-    talk: 'Every Call Counted: Tracking What Mail Brings Back',
-  },
-  {
-    slug: 'alicia-moreno',
-    name: 'Alicia Moreno',
-    role: 'Licensing Program Lead',
-    photo: unsplash('1580489944761-15a19d654956', 600),
-    bio: 'Coaches new licensees through their first routes: finding an anchor, filling 12 spots and running a card from first call to mailbox.',
-    talk: 'Your Territory, Your Business',
-  },
-];
-
-// -------------------------------------------------------------- sponsors --
-
-export interface Sponsor {
-  name: string;
-  kind: string;
-  blurb: string;
-}
-
-/** MADE UP: placeholder partners. Replace with your real sponsors (and logos). */
-export const SPONSORS: Sponsor[] = [
-  {name: 'Riverbend Print Co.', kind: 'Print partner', blurb: 'Prints every 9×12 card on heavy gloss stock.'},
-  {name: 'Clayton Commons', kind: 'Venue partner', blurb: 'Home of our St. Louis breakfasts.'},
-  {name: 'Show-Me Trades Network', kind: 'Community partner', blurb: 'Brings Missouri contractors to the table.'},
-  {name: 'Northside Coffee Roasters', kind: 'Breakfast partner', blurb: 'Keeps the coffee coming at 7:30 AM.'},
-];
-
-/** MADE UP: sponsorship packages and prices. */
-export const SPONSOR_TIERS = [
-  {
-    name: 'Breakfast sponsor',
-    price: '$500',
-    per: 'per event',
-    featured: false,
-    items: [
-      'Your name on the welcome slide and table cards',
-      'Two minutes at the mic to introduce your business',
-      'Two seats at the event',
-      'A thank-you post on our blog',
+    slug: 'growth',
+    name: 'BEE Growth',
+    role: 'Marketing & CRM',
+    icon: 'trending',
+    body: 'Your AI marketing operating system, set up as your own account: a complete CRM with its own leads, inbox, phone number, calendar and automations.',
+    points: ['AI texts new leads in seconds and books them', 'Facebook and Instagram ads from a plain description', 'Run it for your clients under your own brand'],
+    replaces: 'A CRM, a texting tool, an ad designer, a booking app, a landing page builder and an answering service.',
+    useFor: [
+      'Reply to every new lead in seconds, day or night, and book them on your calendar',
+      'Build and launch ads from a short description, starting from proven templates',
+      'Manage your Google Business Profile, reviews and AI calling in one place',
+      'Send estimates and invoices, run email campaigns and track the pipeline',
+      'Give each client their own account under your brand',
     ],
   },
   {
-    name: 'Series partner',
-    price: '$2,000',
-    per: 'per year',
-    featured: true,
-    items: [
-      'Named partner at every breakfast and workshop',
-      'Logo on this website and on event slides',
-      'A table for your materials at every event',
-      'Four seats at every event',
-      'First look at new routes in your area',
+    slug: 'coach',
+    name: 'BEE Coach',
+    role: 'Coaching',
+    icon: 'target',
+    body: 'Everything a coach or consultant needs to run sessions clients remember, under your own brand.',
+    points: ['320+ interactive coaching tools', 'Booking, client CRM and video in one place', 'AI session recaps as branded PDFs'],
+    replaces: 'A scheduling app, a video tool, worksheet templates, a client CRM and hours of session notes.',
+    useFor: [
+      'Run live sessions with interactive tools like the Life Wheel, DISC and GROW',
+      'Book clients online with calendar sync and built-in video',
+      'Turn recorded sessions into AI summaries and branded PDF recaps',
+      'Run team assessments, 360 reviews and surveys with a QR code',
     ],
   },
   {
-    name: 'Table sponsor',
-    price: '$250',
-    per: 'per event',
-    featured: false,
-    items: ['A display table at one event', 'Your name in the event recap', 'One seat at the event'],
+    slug: 'community',
+    name: 'BEE Community',
+    role: 'Community',
+    icon: 'users',
+    body: 'Run a branded community with courses and memberships, or launch your own community platform for clients.',
+    points: ['Branded iOS and Android apps', 'Courses, events, live streams and chat', 'Sell memberships with 0% transaction fees'],
+    replaces: 'A course platform, a membership plugin, a forum, an events tool and a separate mobile app.',
+    useFor: [
+      'Host your clients and students in one branded home, on web and mobile',
+      'Sell memberships, paid channels and courses and keep all the revenue',
+      'Run live events, streams and challenges with points and badges',
+      'Build pages and mini apps by describing them, with no code',
+    ],
+  },
+  {
+    slug: 'content',
+    name: 'BEE Content',
+    role: 'Content',
+    icon: 'zap',
+    body: 'Build a whole marketing campaign in an afternoon, in your voice, from facts you save once.',
+    points: ['Sales pages, emails, ads and posts', 'Guided workflows, not blank prompts', 'Flags missing facts instead of inventing them'],
+    replaces: 'A copywriter for every launch, a pile of prompt documents and the blank page.',
+    useFor: [
+      'Save your business facts, voice and proof once, then reuse them everywhere',
+      'Write sales pages, email sequences, ads, webinars and blog posts that match',
+      'Follow guided workflows instead of guessing what to ask an AI',
+      'Review every draft before it goes out, with missing facts flagged',
+    ],
   },
 ];
 
-// --------------------------------------------------------------- gallery --
-
-export interface GalleryPhoto {
-  src: string;
-  alt: string;
-  caption: string;
-  wide?: boolean;
-}
-
-/** MADE UP captions; stock photos. Replace with photos from your own events. */
-export const GALLERY: GalleryPhoto[] = [
-  {src: PHOTOS.workshop, alt: 'A speaker presents to a seated room of business owners in a brick-walled venue', caption: 'St. Louis launch breakfast', wide: true},
-  {src: PHOTOS.audience, alt: 'Attendees seated close together, listening to a speaker', caption: 'Kansas City, anchor panel'},
-  {src: PHOTOS.tables, alt: 'People talking and laughing around a long table', caption: 'Networking after the talks'},
-  {src: PHOTOS.coffee, alt: 'Three people toast with coffee cups over a wooden table', caption: 'First coffee, 7:30 AM'},
-  {src: PHOTOS.listening, alt: 'A full audience in a dark room facing the stage', caption: 'Full house in Kansas City', wide: true},
-  {src: PHOTOS.meeting, alt: 'Business owners with notebooks around a meeting table', caption: 'Columbia licensee info night'},
-  {src: PHOTOS.deal, alt: 'Two people high-five across a desk with a laptop', caption: 'A route claimed on the spot'},
-  {src: PHOTOS.crowd, alt: 'A crowd mingles in a large hall with tall windows', caption: 'Open networking hour'},
-  {src: PHOTOS.mic, alt: 'A microphone on a stand in front of a blurred audience', caption: 'Open mic: one-minute pitches'},
-  {src: PHOTOS.stage, alt: 'A speaker on stage beside a large screen in front of a big audience', caption: 'Live card teardown'},
-  {src: PHOTOS.chat, alt: 'Four people talk over drinks at a table', caption: 'Coffee-table conversations'},
-  {src: PHOTOS.room, alt: 'An empty event room set with round tables and projection screens', caption: 'Setting up before doors open'},
+/** Figures from BEE’s platforms, for the home page strip. */
+export const FACTS = [
+  {value: 'Seconds', label: 'How fast BEE Growth AI replies to a new lead'},
+  {value: '320+', label: 'Interactive coaching tools in BEE Coach'},
+  {value: '0%', label: 'Transaction fees on BEE Community memberships'},
+  {value: '1 day', label: 'To build a full campaign with BEE Content'},
 ];
 
-// ------------------------------------------------------------- home page --
+// ------------------------------------------------------------------ home --
 
 export const HOME = {
   hero: {
-    eyebrow: 'Breakfasts · workshops · info nights in Missouri',
-    title: 'Where local pros get known',
-    body: 'Saving America Money hosts morning meetups for the plumbers, roofers, HVAC techs, Realtors and med spas who keep Missouri running. Good coffee, straight talk about local marketing, and a room full of people who refer each other.',
+    eyebrow: 'Business Efficiency Experts',
+    title: 'Work smarter. Grow faster.',
+    body: 'BEE is the coaching program and community for owners who want AI to do the busywork. Run your business leaner, or build your own agency, with a proven toolkit and experts in your corner.',
   },
-  expect: {
-    title: 'What to expect',
-    lead: 'Ninety minutes, start to finish. You are back at work by 9:30.',
+  pillars: {
+    title: 'The rules of competing have changed',
+    lead: 'Businesses using AI answer faster, market cheaper and serve more clients with the same team. We help you become one of them.',
+    items: [
+      {icon: 'clock', title: 'Save time', body: 'Automate lead replies, booking, follow-ups and reporting. Get back the hours admin used to eat.'},
+      {icon: 'trending', title: 'Make more money', body: 'Respond first, follow up every time and launch campaigns in an afternoon. Fewer leads slip away.'},
+      {icon: 'layers', title: 'Cut the tool sprawl', body: 'Replace a stack of separate subscriptions with four platforms that cover marketing, coaching, community and content.'},
+      {icon: 'users', title: 'Never build alone', body: 'Coaching and a community of owners building the same thing. Ask, share and get unstuck fast.'},
+    ] as const,
+  },
+  steps: {
+    title: 'How BEE works',
+    items: [
+      {title: 'Join the hive', body: 'Get into the community: the coaching, the playbooks and owners a step ahead of you.'},
+      {title: 'Set up your stack', body: 'We help you set up your BEE Growth account and the tools that fit your business, in the right order.'},
+      {title: 'Grow with coaching', body: 'Work the plan with regular coaching. Measure the time saved and the revenue gained, then scale.'},
+    ],
+  },
+  paths: {
+    title: 'Two ways to work with BEE',
+    lead: 'Same toolkit, same coaching. Pick the path that fits where you are.',
     items: [
       {
-        title: 'Real numbers',
-        body: 'Tracked calls and QR scans from real cards, with what worked and what didn’t. No slides full of promises.',
+        name: 'Grow your business',
+        who: 'For owners who want to run leaner and win more customers.',
+        items: [
+          'AI lead response and booking on your own BEE Growth account',
+          'Campaigns and content built in an afternoon',
+          'Coaching on where AI saves you the most time',
+          'A community of owners solving the same problems',
+        ],
+        cta: {label: 'Explore coaching', href: '/coaching'},
       },
       {
-        title: 'The right room',
-        body: 'Owners and operators only: trades, home services, healthcare and real estate. One of each is the whole point.',
-      },
-      {
-        title: 'Hot breakfast',
-        body: 'Coffee from 7:30, a real breakfast, and a room set up for talking, not just listening.',
-      },
-      {
-        title: 'A route check',
-        body: 'Find out on the spot whether your trade is still open on the 9×12 card in your ZIP code.',
+        name: 'Build your own agency',
+        who: 'For coaches, consultants and marketers ready to serve clients.',
+        items: [
+          'BEE marketing, coaching and community platforms, under your brand',
+          'A BEE Growth account for every client you sign',
+          'Coaching on packaging, pricing and selling your offer',
+          'Playbooks to deliver results without a big team',
+        ],
+        cta: {label: 'Explore the agency path', href: '/agency'},
+        featured: true,
       },
     ],
   },
-  /** MADE UP: testimonials. Replace with quotes from real attendees (with their permission). */
-  testimonials: [
+  faq: [
+    {q: 'Do I need to be technical?', a: 'No. The platforms are built for business owners, and coaching walks you through setup step by step.'},
     {
-      text: 'I came for the breakfast and left with two referrals from the plumber at my table. Then I claimed HVAC on my home route.',
-      name: 'Tony Brandt',
-      role: 'Brandt Heating & Air',
+      q: 'What is a BEE Growth account?',
+      a: 'A complete CRM of your own: your leads, inbox, phone number, calendar, pipelines, forms and automations, under your branding.',
     },
-    {
-      text: 'Finally a marketing event that talks numbers, not hype. Ninety minutes and I knew exactly what the card costs per house.',
-      name: 'Dana Whitfield',
-      role: 'Whitfield Roofing',
-    },
-    {
-      text: 'Sitting next to the best names in town on one card is the whole pitch. These mornings are where you meet them.',
-      name: 'Renee Calloway',
-      role: 'Realtor, St. Louis',
-    },
+    {q: 'Can I resell the tools to my own clients?', a: 'Yes. That is the agency path: BEE platforms you set up for each client under your own brand.'},
+    {q: 'Do I have to use all four platforms?', a: 'No. Start with whatever saves you the most time right now. We help you add the rest when it makes sense.'},
   ],
   cta: {
-    title: 'Your trade, your ZIP, one seat.',
-    body: 'Reserve a seat at the next breakfast, or join the community to hear about new dates first.',
+    eyebrow: 'Your next step',
+    title: 'Stop doing it the hard way',
+    body: 'Join BEE and get the coaching, the community and the tools to grow with less effort.',
   },
 };
 
-// ------------------------------------------------------------ about page --
+// -------------------------------------------------------------- coaching --
 
-export const ABOUT = {
-  title: 'Local pros, in one room',
-  lede: 'Saving America Money puts the best local service businesses on one premium postcard. Our events put them in one room.',
-  story: [
-    {
-      heading: 'Why we started',
-      body: 'Good local trades were losing to louder ones. A great roofer with no marketing budget was invisible on his own street, while coupon envelopes made everyone look like a discount. We built a premium 9×12 card that 12 non-competing local pros share, mailed to 10,000 homes in one ZIP code, with one business per trade on every route.',
-    },
-    {
-      heading: 'Why we host events',
-      body: 'Owners trust what they hear from other owners. So we started hosting early breakfasts where business owners compare real numbers, meet the other pros on their route and ask anything. They are also how most of our cards fill up.',
-    },
-    {
-      heading: 'Where we are',
-      body: 'We are launching across Missouri: St. Louis first, then Kansas City, Columbia and Springfield. Each new route starts with a local anchor, usually a top Realtor, then HVAC, plumbing and the rest of the trades.',
-    },
-  ],
-  card: {
-    title: 'The card, in four numbers',
+/** ✎ EDIT: the coaching program's real format, cadence and price. */
+export const COACHING = {
+  title: 'Coaching that turns AI into hours and dollars',
+  lede: 'Practical business coaching for owners who want a leaner operation: find where the time goes, automate it with the right tools, and put the hours back into growth.',
+  focus: {
+    title: 'What we work on together',
     items: [
-      {value: '9×12', label: 'Oversized, heavy gloss postcard'},
-      {value: '10,000', label: 'Households in one ZIP per mail drop'},
-      {value: '12', label: 'Spots per card, one trade each'},
-      // Real prices from the business profile.
-      {value: '$900', label: 'Smallest spot, about 9¢ a home'},
+      {title: 'Efficiency audit', body: 'Map where your week actually goes and find the tasks AI and automation can take off your plate first.'},
+      {title: 'Lead to booking', body: 'Set up instant lead replies, follow-ups and online booking so no enquiry waits until Monday.'},
+      {title: 'Marketing on a system', body: 'Build campaigns, content and ads from one profile of your business instead of starting from scratch each time.'},
+      {title: 'Offer and pricing', body: 'Sharpen what you sell and what you charge, so the time you save turns into profit, not just free hours.'},
+      {title: 'Team and delegation', body: 'Decide what people do, what software does, and how you hand work off without losing quality.'},
+      {title: 'Numbers that matter', body: 'Track response time, booked calls, close rate and hours saved, so you can see the change every month.'},
     ],
   },
-  values: [
-    {title: 'Premium, not coupons', body: 'Your business sits on a curated card next to trusted local names, never in a stuffed envelope.'},
-    {title: 'One per trade', body: 'Category exclusivity on every route. Once a spot is claimed, no competitor in that trade can get on the card.'},
-    {title: 'Everything tracked', body: 'Every spot gets its own QR code and phone number, so you see what each mail drop brought back.'},
-    {title: 'No long contracts', body: 'Buy the drops you want. We would rather earn the next one with results.'},
+  format: {
+    title: 'How the coaching works',
+    items: [
+      {icon: 'message', title: 'Group coaching calls', body: 'Live calls where you bring a real problem and leave with the next step.'},
+      {icon: 'target', title: 'Strategy sessions', body: 'Focused one-to-one time to plan your stack and your priorities.'},
+      {icon: 'layers', title: 'Playbooks and courses', body: 'Step-by-step setups for each tool, inside the community, at your own pace.'},
+      {icon: 'users', title: 'The hive', body: 'Owners at every stage, sharing what works, in one place on web and mobile.'},
+    ] as const,
+  },
+  faq: [
+    {q: 'Who is coaching for?', a: 'Owners and operators of small and growing businesses who feel busy but not efficient, and want a clear plan to fix it.'},
+    {q: 'How much time do I need?', a: 'A few hours a week to start. The point of the program is to give you more time back than it takes.'},
+    {q: 'Do I need the tools before I start?', a: 'No. We help you choose and set them up as part of the coaching, starting with the one that pays off fastest.'},
   ],
 };
 
-// ---------------------------------------------------------- contact page --
+// ---------------------------------------------------------------- agency --
 
-export const CONTACT = {
-  title: 'Talk to us',
-  lede: 'Questions about an event, speaking, sponsoring, a spot on the card or becoming a licensee: send a note and a real person replies within one business day.',
-  /** MADE UP: replace with your real contact details, or remove a line. */
-  details: [
-    {label: 'Email', value: 'hello@savingamericamoney.com', href: 'mailto:hello@savingamericamoney.com'},
-    {label: 'Website', value: 'savingamericamoney.com', href: 'https://savingamericamoney.com'},
-    {label: 'Based in', value: 'Missouri, USA', href: ''},
+/** ✎ EDIT: the agency program's real format and terms. */
+export const AGENCY = {
+  title: 'Build your own agency on a proven stack',
+  lede: 'Every local business needs faster lead response, better marketing and less admin. BEE gives you the platforms, branded as yours, the playbooks and the coaching to sell that as your own agency.',
+  services: {
+    title: 'What you can sell',
+    lead: 'Services local businesses already pay for, delivered with tools that do most of the work.',
+    items: [
+      {title: 'AI lead response', body: 'Instant texting, booking and follow-up for every lead, on the client’s own BEE Growth account.'},
+      {title: 'Ads and campaigns', body: 'Facebook and Instagram ads and full campaigns, built fast from proven templates.'},
+      {title: 'Local visibility', body: 'Google Business Profile management, reviews and listings, run for the client.'},
+      {title: 'Client communities', body: 'A branded community, course or membership with its own mobile app.'},
+      {title: 'Coaching programs', body: 'Package your expertise into sessions and assessments with interactive tools.'},
+      {title: 'Content on retainer', body: 'Emails, posts, sales pages and blogs, in the client’s voice, every month.'},
+    ],
+  },
+  steps: {
+    title: 'From zero to your first clients',
+    items: [
+      {title: 'Pick your niche', body: 'Choose who you serve and the problem you solve best.'},
+      {title: 'Package your offer', body: 'Turn the toolkit into two or three clear packages with a price.'},
+      {title: 'Brand your platform', body: 'Put your name and logo on the platforms your clients log into.'},
+      {title: 'Sign and deliver', body: 'Win your first clients with our playbooks and set each one up in minutes.'},
+      {title: 'Scale', body: 'Add clients without adding staff, because the platforms do the heavy lifting.'},
+    ],
+  },
+  included: [
+    'BEE marketing, coaching and community platforms, under your brand',
+    'A BEE Growth account for every client',
+    'Playbooks for setup, onboarding and delivery',
+    'Coaching on niche, offer, pricing and sales',
+    'A community of agency owners to learn from',
   ],
   faq: [
-    {
-      q: 'Who are the events for?',
-      a: 'Owners and operators of local service businesses: plumbing, HVAC, roofing, contractors, real estate, med spas, auto and healthcare. Info nights are for people who want to run their own Saving America Money territory.',
-    },
-    {
-      q: 'Do I pay online?',
-      a: 'No. Reserve your seat here and pay at the door. Info nights are free.',
-    },
-    {
-      q: 'Will someone try to sell me a spot on the card?',
-      a: 'We will tell you how the card works and whether your trade is open on your route. Nobody is pushed into anything, and there are no long-term contracts.',
-    },
-    {
-      q: 'Can I bring a colleague?',
-      a: 'Yes. Reserve a seat for each person (up to four per request) so we have enough breakfast.',
-    },
+    {q: 'Do I need agency experience?', a: 'No. The program is built for coaches, consultants, marketers and owners starting their first agency.'},
+    {q: 'Whose brand do clients see?', a: 'Yours. Clients see your name, logo and colours.'},
+    {q: 'Can I start part-time?', a: 'Yes. Many agencies start with one or two clients alongside other work and grow from there.'},
   ],
 };
 
-/** Fill `{name}` with the community's name. */
-export function withName(text: string, name: string): string {
-  return text.replaceAll('{name}', name);
-}
+// ----------------------------------------------------------------- about --
 
-/** "Thu, Dec 3, 2026" in the event's own city time (Missouri: America/Chicago). */
-export function eventDate(event: EventItem, opts: Intl.DateTimeFormatOptions = {}): string {
-  return new Date(event.start).toLocaleDateString('en-US', {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    timeZone: 'America/Chicago',
-    ...opts,
-  });
-}
+/** ✎ EDIT: tell your own story, and add your name and photo. */
+export const ABOUT = {
+  title: 'We help businesses do more with less',
+  lede: 'Business Efficiency Experts, BEE for short, is a coaching program and community built on one idea: in today’s market, the efficient business wins.',
+  story: [
+    {
+      heading: 'Why BEE exists',
+      body: 'Small businesses are competing with companies that answer every lead instantly, market every day and run lean with AI. Most owners are too busy running the business to work out how. We built BEE to close that gap: the right tools, set up in the right order, with coaching to make them stick.',
+    },
+    {
+      heading: 'Why a bee',
+      body: 'A hive gets more done than any single bee, and nothing in it is wasted. That is the business we want you to run: organised, efficient and productive, with a community around you that makes everyone stronger.',
+    },
+    {
+      heading: 'What we believe',
+      body: 'Technology should save you time, not eat it. You should own your brand and your clients. And the best way to learn is next to people a step ahead of you, sharing what actually works.',
+    },
+  ],
+  values: [
+    {title: 'Efficient', body: 'Every tool and every habit has to earn its place by saving time or making money.'},
+    {title: 'Practical', body: 'Real setups and real numbers, not theory. You leave every session with a next step.'},
+    {title: 'Together', body: 'The hive is the advantage. Members share wins, templates and lessons openly.'},
+  ],
+};
 
-export const speakerBySlug = (slug: string) => SPEAKERS.find(s => s.slug === slug);
+// --------------------------------------------------------------- contact --
+
+export const CONTACT = {
+  title: 'Talk to the BEE team',
+  lede: 'Book a strategy call, ask about coaching or the agency program, or get help choosing the right tools. A real person replies.',
+  details: [
+    {label: 'Replies', value: 'Within one business day', href: null},
+    {label: 'Members', value: 'Ask in the community', href: '/feeds'},
+    {label: 'New here', value: 'Join BEE', href: '/join'},
+  ],
+  faq: [
+    {q: 'What happens on a strategy call?', a: 'We look at where your time goes, where leads slip away and which tool would pay off first. You leave with a plan, whether or not you join.'},
+    {q: 'Is BEE for my kind of business?', a: 'If you sell a service and spend too much time on admin, follow-up or marketing, yes. Tell us about your business and we will say honestly.'},
+    {q: 'I already use some of the tools. Can I still join?', a: 'Of course. We help you get more out of what you have and fill the gaps.'},
+  ],
+};

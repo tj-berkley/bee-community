@@ -1,0 +1,33 @@
+---
+/** A question list on a grey band (native <details>, no script). */
+import Icon from './Icon.astro';
+
+interface Props {
+  items: {q: string; a: string}[];
+  title?: string;
+}
+
+const {items, title = 'Good to know'} = Astro.props;
+---
+
+<section class="band section secondary" aria-labelledby="faq-title">
+  <div class="wrap narrow">
+    <div class="stack" style="margin-bottom: 32px">
+      <p class="kicker">Questions</p>
+      <h2 class="t-heading-md" id="faq-title">{title}</h2>
+    </div>
+    <div class="faq">
+      {
+        items.map(item => (
+          <details>
+            <summary>
+              {item.q}
+              <Icon name="plus" />
+            </summary>
+            <p>{item.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>

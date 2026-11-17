@@ -40,9 +40,12 @@ const topics = CONTACT_TOPICS.map(value => ({value, label: TOPIC_LABELS[value]})
           }
         </dl>
         <div class="stack" style="gap: 12px">
-          <h2 class="t-card">Looking for a seat?</h2>
-          <p class="mt-0">The fastest way is the ticket form. Reserve now, pay at the door.</p>
-          <a class="button secondary" href="/schedule#tickets"><Icon name="ticket" />Get your ticket</a>
+          <h2 class="t-card">Want to talk it through?</h2>
+          <p class="mt-0">
+            Choose “Booking a strategy call” in the form and tell us about your business. We’ll reply with times that
+            work.
+          </p>
+          <a class="button secondary" href="/toolkit"><Icon name="layers" />See the toolkit first</a>
         </div>
       </div>
 
@@ -52,7 +55,7 @@ const topics = CONTACT_TOPICS.map(value => ({value, label: TOPIC_LABELS[value]})
         <form class="site-form" novalidate data-site-form data-endpoint="/site-api/inbox/contact" data-done="contact-done">
           <Field id="c-topic" name="topic" label="What’s it about?" rule="topic" type="select" options={topics} value="general" full />
           <Field id="c-name" name="name" label="Your name" rule="name" autocomplete="name" placeholder="Jordan Lee" />
-          <Field id="c-business" name="business" label="Business" rule="businessOptional" autocomplete="organization" placeholder="Lee Plumbing & Drain" optional />
+          <Field id="c-business" name="business" label="Business" rule="businessOptional" autocomplete="organization" placeholder="Lee Consulting" optional />
           <Field id="c-email" name="email" label="Email" rule="email" type="email" inputmode="email" autocomplete="email" placeholder="name@example.com" full />
           <Field
             id="c-message"
@@ -60,7 +63,7 @@ const topics = CONTACT_TOPICS.map(value => ({value, label: TOPIC_LABELS[value]})
             label="Message"
             rule="message"
             type="textarea"
-            placeholder="Tell us your trade, your ZIP code and what you’d like to know."
+            placeholder="Tell us what your business does and where you’d like to save time."
             hint="10 to 4,000 characters."
             full
           />
@@ -80,7 +83,7 @@ const topics = CONTACT_TOPICS.map(value => ({value, label: TOPIC_LABELS[value]})
           <Icon name="check" />
           <h3>Message sent</h3>
           <p>Thanks for reaching out. A real person will reply within one business day.</p>
-          <a class="button secondary" href="/schedule">See upcoming events</a>
+          <a class="button secondary" href="/toolkit">Explore the toolkit</a>
         </div>
       </div>
     </section>
@@ -109,7 +112,7 @@ const topics = CONTACT_TOPICS.map(value => ({value, label: TOPIC_LABELS[value]})
 <script>
   import {initSiteForms} from '../lib/form-client';
 
-  // `/contact?topic=sponsoring` picks the subject.
+  // `/contact?topic=strategy` picks the subject.
   const topic = new URLSearchParams(window.location.search).get('topic');
   const select = document.querySelector<HTMLSelectElement>('#c-topic');
   if (topic && select && Array.from(select.options).some(o => o.value === topic)) select.value = topic;

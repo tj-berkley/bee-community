@@ -1,7 +1,7 @@
 ---
-/** About: who runs the events, and the card behind them. PRERENDERED. */
-import Icon from '../components/Icon.astro';
-import {ABOUT, PHOTOS} from '../content/site';
+/** About: why BEE exists and what it stands for. PRERENDERED. */
+import CtaBand from '../components/CtaBand.astro';
+import {ABOUT, BRAND, PHOTOS} from '../content/site';
 import Base from '../layouts/Base.astro';
 import {staticContext} from '../server/page';
 
@@ -10,22 +10,22 @@ export const prerender = true;
 const {site, viewer} = await staticContext(Astro.request);
 ---
 
-<Base site={site} viewer={viewer} isStatic title="About" description={ABOUT.lede}>
+<Base site={site} viewer={viewer} isStatic title="About" description={ABOUT.lede} image={PHOTOS.boardroom}>
   <main>
     <section class="section" style="padding-block-start: 96px">
       <div class="wrap hero-split">
         <div class="stack">
-          <p class="kicker">About</p>
+          <p class="kicker">About BEE</p>
           <h1 class="t-page">{ABOUT.title}</h1>
           <p class="t-lead">{ABOUT.lede}</p>
           <div class="button-row">
-            <a class="button lg" href="/schedule">See upcoming events</a>
-            <a class="button lg secondary" href="/contact">Talk to us</a>
+            <a class="button lg" href="/coaching">See the coaching</a>
+            <a class="button lg secondary" href={BRAND.callHref}>Talk to us</a>
           </div>
         </div>
         <div class="hero-media">
           <div class="frame">
-            <img src={PHOTOS.meeting} alt="Business owners with notebooks talking around a meeting table" width="1400" height="1050" />
+            <img src={PHOTOS.boardroom} alt="A team meeting around a table with laptops in a bright room" width="1400" height="934" fetchpriority="high" />
           </div>
         </div>
       </div>
@@ -44,42 +44,19 @@ const {site, viewer} = await staticContext(Astro.request);
       </div>
     </section>
 
-    <section class="section secondary" aria-labelledby="card-title">
-      <div class="wrap">
-        <div class="section-head">
-          <div class="stack">
-            <p class="kicker">The 9×12 card</p>
-            <h2 class="t-heading" id="card-title">{ABOUT.card.title}</h2>
-          </div>
-          <p class="t-lead">
-            Spots are $900, $1,300 and $1,800 per 10,000 homes, with design, printing and mailing included.
-          </p>
-        </div>
-        <div class="stat-strip">
-          {
-            ABOUT.card.items.map(item => (
-              <div>
-                <span class="figure">{item.value}</span>
-                <span class="figure-label">{item.label}</span>
-              </div>
-            ))
-          }
-        </div>
-      </div>
-    </section>
-
-    <section class="band section secondary">
+    <section class="section secondary">
       <div class="wrap">
         <div class="section-head">
           <div class="stack">
             <p class="kicker">What we stand for</p>
-            <h2 class="t-heading">Premium reach at a shared cost</h2>
+            <h2 class="t-heading">How the hive works</h2>
           </div>
         </div>
         <div class="rule-grid">
           {
-            ABOUT.values.map(value => (
+            ABOUT.values.map((value, i) => (
               <div>
+                <span class="rule-num">0{i + 1}</span>
                 <h3>{value.title}</h3>
                 <p>{value.body}</p>
               </div>
@@ -89,21 +66,26 @@ const {site, viewer} = await staticContext(Astro.request);
       </div>
     </section>
 
-    <section class="dark-band section secondary">
-      <div class="wrap cta-split">
-        <div class="stack">
-          <p class="kicker">Build your own territory</p>
-          <h2 class="t-heading">Run a local marketing business</h2>
-          <p class="t-lead">
-            Our licensing program equips entrepreneurs to sell the card and directory listings in their own area. Start at
-            a free info night.
-          </p>
+    <section class="band section secondary">
+      <div class="wrap hero-split">
+        <div class="hero-media">
+          <div class="frame">
+            <img src={PHOTOS.community} alt="Four people smiling around a table, looking at a phone together" width="1400" height="934" loading="lazy" />
+          </div>
         </div>
-        <div class="button-row">
-          <a class="button lg on-dark" href="/schedule#licensee-info-night-online">Licensee info night <Icon name="arrow" /></a>
-          <a class="button lg outline-dark" href="/contact?topic=licensing">Ask a question</a>
+        <div class="stack">
+          <p class="kicker">The community</p>
+          <h2 class="t-heading-md">Owners helping owners</h2>
+          <p class="t-lead">
+            Inside BEE you’ll find coaching calls, step-by-step playbooks and members sharing the setups, templates and
+            numbers that work for them. On the web and in the app.
+          </p>
+          <a class="button lg secondary" href="/join" data-guest-only>Join the community</a>
+          <a class="button lg secondary" href="/feeds" data-member-only hidden>Open the community</a>
         </div>
       </div>
     </section>
+
+    <CtaBand />
   </main>
 </Base>

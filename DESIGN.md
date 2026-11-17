@@ -1,32 +1,32 @@
 ---
 version: alpha
-name: Evergreen Editorial
-description: "Confident and editorial: huge tight-tracked grotesk headlines on white, one deep evergreen teal, a coral spark, and quiet hairlines everywhere else."
+name: BEE Honey & Ink
+description: "Business Efficiency Experts: huge tight-tracked grotesk headlines on white, ink-black buttons, the logo's honey gold as the highlight, and quiet warm hairlines everywhere else."
 colors:
-  primary: "#0E5E59"
-  primary-strong: "#0A4A46"
-  primary-tint: "#D5ECE8"
-  primary-tint-strong: "#BFE2DC"
-  on-primary-tint: "#0A4A46"
-  wash: "#E9F3F1"
-  wash-line: "#CFE3DF"
-  accent: "#F06B4F"
+  primary: "#16130E"
+  primary-strong: "#3A3226"
+  primary-tint: "#FDF3D7"
+  primary-tint-strong: "#F9E3A6"
+  on-primary-tint: "#6B4800"
+  honey: "#E8A512"
+  honey-strong: "#F2BE3C"
+  honey-ink: "#8A5D00"
   background: "#FFFFFF"
-  surface: "#F9FAFB"
-  surface-sunken: "#F2F4F7"
-  ink: "#101828"
-  ink-body: "#475467"
-  ink-label: "#344054"
-  ink-muted: "#5D6B7E"
-  ink-placeholder: "#98A2B3"
-  line: "#EAECF0"
-  line-strong: "#D0D5DD"
-  inverse: "#0D2624"
-  inverse-raised: "#143533"
-  inverse-outline: "#3B5F5C"
-  on-inverse: "#F2F7F6"
-  on-inverse-muted: "#A3BAB7"
-  on-inverse-accent: "#8FD3CA"
+  surface: "#FBF9F4"
+  surface-sunken: "#F4F0E6"
+  ink: "#16130E"
+  ink-body: "#514B40"
+  ink-label: "#3A352C"
+  ink-muted: "#6B6458"
+  ink-placeholder: "#A39C8E"
+  line: "#EDE8DD"
+  line-strong: "#D9D1C1"
+  inverse: "#15120C"
+  inverse-raised: "#241F16"
+  inverse-outline: "#4D4433"
+  on-inverse: "#FBF7EE"
+  on-inverse-muted: "#BDB4A2"
+  on-inverse-accent: "#F2BE3C"
   success: "#067647"
   success-bg: "#ECFDF3"
   warning: "#B54708"
@@ -119,84 +119,79 @@ spacing:
   input-lg: "46px"
 ---
 
-# Evergreen Editorial
+# BEE Honey & Ink
 
+The brand of **Business Efficiency Experts (BEE)**. The logo (`public/brand/`) is a gold, geometric
+bee with a rising arrow on black: the site is black and white, and the logo's gold is the highlight.
 One family (Schibsted Grotesk, on Google Fonts, weights 400-800) does everything; headings are the
 same face at 800 with very tight tracking. There is no separate display font.
 
 ## Look and feel
 
-1. **White page, grey bands.** The page background is `background` #FFFFFF. Alternate sections sit on `surface` #F9FAFB with a 1px `line` #EAECF0 hairline top and bottom (`border-y`). No gradients behind content.
-2. **Headlines are the hero.** Hero headings run `clamp(48px,7vw,96px)` / 0.94 / -0.055em / 800, capped at about 13 characters per line (`max-width: 13ch`, `text-wrap: balance`). Section H2s cap at 16-18ch. Big, black (`ink` #101828), tight.
-3. **One teal, one coral.** `primary` #0E5E59 is the only colour for buttons, links, active states and focus. `accent` coral #F06B4F is a spark only: a logo dot, the "most popular" plan badge, a timeline dot. Never a coral button for a normal action, never a coral background block.
-4. **Body copy is soft slate.** Paragraphs use `ink-body` #475467; the lead under a hero is 19px / 1.5, max width 32rem.
-5. **One dark band per page.** A closing call-to-action or the featured plan sits on `inverse` #0D2624 (deep green-black), text `on-inverse` #F2F7F6, secondary text `on-inverse-muted` #A3BAB7, ticks in `on-inverse-accent` #8FD3CA.
-6. **Hairlines, not boxes.** Feature lists are columns separated by a 2px `ink` top rule (`border-top: 2px solid #101828; padding-top: 20px`) or a 1px `ink` rule over a grid, rather than shadowed cards.
-7. **Flat at rest.** Shadows are soft and cool (from #101828 at low alpha), used for lifted images and floating panels only. Focus is a 4px teal halo `0 0 0 4px rgba(14,94,89,.18)`, keyboard (`:focus-visible`) only.
-8. **Logical CSS.** Use `start`/`end` and `ms-/me-/ps-/pe-` so the site mirrors for right-to-left languages.
+1. **White page, warm bands.** The page background is `background` #FFFFFF. Alternate sections sit on `surface` #FBF9F4 with a 1px `line` #EDE8DD hairline top and bottom. No gradients behind content.
+2. **Headlines are the hero.** Hero headings run `clamp(48px,7vw,96px)` / 0.94 / -0.055em / 800, capped at about 13 characters per line (`max-width: 13ch`, `text-wrap: balance`). Section H2s cap at 16-18ch. Big, black (`ink` #16130E), tight.
+3. **Ink does the work, honey is the highlight.** `primary` ink #16130E is the colour for buttons, links and the focus border. `honey` #E8A512 is the logo's gold: hexagon markers (kicker dots), icon tiles (on `primary-tint`), the "Most popular" badge, and the buttons on the dark band. Gold text on white is always `honey-ink` #8A5D00 (5:1); never honey #E8A512 as text on white.
+4. **Body copy is warm slate.** Paragraphs use `ink-body` #514B40; the lead under a hero is 19px / 1.5, max width 32rem.
+5. **One dark band per page.** The closing call to action (`CtaBand`) or the featured plan sits on `inverse` #15120C, text `on-inverse` #FBF7EE, secondary text `on-inverse-muted` #BDB4A2, ticks and kickers in `on-inverse-accent` #F2BE3C. Its primary button is honey with ink text.
+6. **Hairlines, not boxes.** Feature lists are columns separated by a 2px `ink` top rule (`border-top: 2px solid #16130E; padding-top: 20px`) rather than shadowed cards.
+7. **Hexagons, sparingly.** The honeycomb is the motif: small hexagon markers (`clip-path`) are fine; never honeycomb wallpaper, cartoon bees or bee emoji.
+8. **Flat at rest.** Shadows are soft and warm (from #16130E at low alpha), for lifted images and floating panels only. Focus is a 4px honey halo `0 0 0 4px rgba(232,165,18,.35)`, keyboard (`:focus-visible`) only.
+9. **Logical CSS.** Use `start`/`end` and inline/block properties so the site mirrors for right-to-left languages.
 
 ## Components
 
+**Brand lockup** - the logo (`/brand/bee-mark-96.png`, shown at 40px) + "BEE" (21px / 800 / -0.035em) with "Business Efficiency Experts" under it (11px / 600, `ink-muted`; hidden in the header under 1100px). Favicons: `/favicon.ico`, `/brand/favicon-192.png`, `/brand/apple-touch-icon.png`.
+
 **Buttons** - base: inline-flex, centred, gap 8px, `rounded.md` 10px, 1px border, weight 600, line-height 1, transition 150ms ease.
-- Sizes: compact 34px / 0 12px / 14px; default 40px / 0 16px / 14px; large 48px / 0 22px / 16px with 12px radius. The header CTA is 40px, 0 18px, 15px/600.
-- Primary: bg #0E5E59, text #FFFFFF, transparent border, shadow `0 1px 2px rgba(16,24,40,.08)`; hover #0A4A46.
-- Secondary: bg #FFFFFF, border #D0D5DD, text #101828, shadow `0 1px 2px rgba(16,24,40,.05)`; hover bg #F9FAFB.
-- Ghost: transparent, text #344054; hover bg #F2F4F7, text #101828.
-- On dark band: bg #FFFFFF, text #0E5E59; hover bg #E9F3F1, text #0A4A46. Outline on dark: border #3B5F5C, text #F2F7F6.
-- Disabled: bg #F2F4F7, text #98A2B3, border #EAECF0, no shadow.
+- Sizes: compact 34px / 0 12px / 14px; default 40px / 0 16px / 14px; large 48px / 0 22px / 16px with 12px radius.
+- Primary: bg #16130E, text #FFFFFF; hover #3A3226.
+- Secondary: bg #FFFFFF, border #D9D1C1, text #16130E; hover bg #FBF9F4.
+- Ghost: transparent, text #3A352C; hover bg #F4F0E6.
+- On dark band: bg honey #E8A512, text #16130E; hover #F2BE3C. Outline on dark: border #4D4433, text #FBF7EE.
+- Disabled: bg #F4F0E6, text #A39C8E, no shadow.
 - At most one primary button per section; pair it with a secondary.
 
-**Cards** - `rounded.xl` 14px, padding 24px, 1px #EAECF0 border, bg #FFFFFF, no shadow at rest. Website info and pricing cards are larger: `rounded.3xl` 20px, padding 32px. Card title 22px / 800 / -0.025em. Featured pricing card: bg #0D2624, text #F2F7F6, shadow `0 24px 48px -16px rgba(13,38,36,.45)`, a coral #F06B4F pill badge. Hover lift for clickable cards: `0 12px 32px -8px rgba(16,24,40,.12), 0 4px 8px -4px rgba(16,24,40,.06)`.
+**Cards** - `rounded.xl` 14px (tool and pricing cards 20px), padding 24-32px, 1px #EDE8DD border, bg #FFFFFF, no shadow at rest. Card title 22px / 800 / -0.025em. Featured card: bg #15120C, text #FBF7EE, a honey pill badge with ink text.
 
-**Big figures** (stats, prices) - `figure` style `clamp(48px,5vw,68px)` / 0.95 / -0.055em / 800 in `ink`, label underneath 14px `ink-muted`.
+**Icon tile** - 44px square, radius 12px, bg `primary-tint` #FDF3D7, a 22px line icon in `on-primary-tint` #6B4800.
 
-**Inputs** (contact and newsletter forms) - full width, height 42px (46px on wide forms, 16px text), padding 0 14px, `rounded.md` 10px, bg #FFFFFF, 1px border #D0D5DD, text 15px #101828, placeholder #98A2B3, shadow `0 1px 2px rgba(16,24,40,.05)`. Focus: border #0E5E59 + `0 0 0 4px rgba(14,94,89,.14)`. Invalid: border #F04438 + `0 0 0 4px rgba(240,68,56,.12)`, error text #B42318 with an icon. Label 14px/600 #344054 with 8px gap; hint 13px #5D6B7E. Textarea and native select share the look (chevron icon at the end edge).
+**Big figures** - `figure` style in `ink`, label underneath 14px `ink-muted`.
 
-**Badges** - height 24px, pill radius 999px, padding 0 10px, 12px / 600, optional 7px dot.
-- Tint: bg #E9F3F1, text #0E5E59. Neutral: bg #FFFFFF, border #EAECF0, text #344054. Grey: bg #F2F4F7, text #344054.
-- Success #067647 on #ECFDF3; warning #B54708 on #FFFAEB; error #B42318 on #FEF3F2.
-- Colour never carries meaning alone; the word does.
+**Inputs** - full width, height 42px, padding 0 14px, radius 10px, bg #FFFFFF, 1px border #D9D1C1, text 15px #16130E, placeholder #A39C8E. Focus: border #16130E + the honey halo. Invalid: border #F04438 + `0 0 0 4px rgba(240,68,56,.12)`, error text #B42318.
 
-**Chips / filter tabs** (blog categories, program filters) - 34px tall, radius 8px, padding 0 12px, 13px/600. Off: border #D0D5DD, bg #FFFFFF, text #344054, hover bg #F9FAFB. On: border and bg #0E5E59, text #FFFFFF.
+**Badges** - height 24px, pill, padding 0 10px, 12px / 600. Tint: bg #FDF3D7, text #16130E. Spark: bg honey, text ink. Colour never carries meaning alone; the word does.
 
-**Nav (header)** - sticky top, bg #FFFFFF, 1px #EAECF0 bottom border. Inner row: max width 1240px, padding 14px 32px, gap 32px. Wordmark: 21px / 800 / -0.035em, lowercase, with a small coral #F06B4F dot. Links: 15px/600 #344054, padding 8px 12px, radius 8px, hover #101828. A 40px primary CTA at the end. On phones collapse links into a menu button (ghost style).
+**Nav (header)** - sticky, white, 1px #EDE8DD bottom border. Links 15px/600 #3A352C, padding 8px 12px, radius 8px; current page on `primary-tint`. "Book a call" primary CTA at the end. Phones: a menu button.
 
-**Footer** - 1px #EAECF0 top border, white. Inner row max 1240px, padding 40px 32px, wrapping flex, gap 16px 32px, text 14px #5D6B7E. Wordmark 17px / 800 / -0.03em #101828. Links 500 weight #344054, hover #101828, no underline.
+**Footer** - 1px #EDE8DD top border, white, the brand lockup, three link columns (Programs, Company, Community), text 14px `ink-muted`.
 
-**FAQ (pricing/contact)** - narrow 900px column, padding 96px 32px. Each row is a full-width button: padding 22px 0, 18px / 700 #101828, hairline between rows; answer 16px / 1.6 #475467.
-
-**Avatars** (testimonials, team) - round, bg #D5ECE8, initial in #0A4A46 600; or a real headshot cropped round.
+**FAQ** - narrow 900px column; each row a `<details>` with an 18px / 700 summary and a plus icon that turns into a cross.
 
 ## Layout & spacing
 
-- 4px base scale. Content max width 1240px with a 32px side gutter (16px on phones). Narrow reading column (blog article, FAQ, about story) 900px.
+- 4px base scale. Content max width 1240px with a 32px side gutter (16px on phones). Narrow reading column 900px.
 - Sections: 112px top and bottom; secondary sections 96px; on phones about 64px.
-- Hero: two columns that wrap - text column `flex: 1 1 520px`, gap 18px; image column `flex: 1 1 400px`. Column gap 64px, row gap 48px.
-- Card grids: `repeat(auto-fit, minmax(240px, 1fr))`, gap 32px (stat strips: minmax(200px,1fr), gap 16px).
-- Stack inside a text block: heading, 18-20px gap, lead, 24px, button row (gap 12px).
-- No horizontal scroll at 360px width; headings use `clamp()` so they shrink naturally.
+- Hero: two columns that wrap - text `flex: 1 1 520px`, image `flex: 1 1 400px`, gap 64px / 48px.
+- Card grids: `repeat(auto-fit, minmax(260px, 1fr))`, gap 24-32px.
+- No horizontal scroll at 360px width; headings use `clamp()`.
 
 ## Photography & imagery
 
-- Use real photographs of real people and places: the owner, members, sessions, the space. Never cartoons, 3D blobs, stock vector illustrations or grey placeholders.
-- Feature images sit in a frame: radius 16-18px, 1px #EAECF0 border, bg #F9FAFB, shadow `0 40px 80px -40px rgba(16,24,40,.35)`. Keep a fixed aspect ratio (for example 1440/860 or 4/3) and `object-fit: cover`.
-- Natural, daylight colour grading with cool greens and neutrals sits best next to the teal; avoid heavy filters and saturated orange casts that fight the coral.
-- Portraits for testimonials and team: square or round crops, consistent lighting.
+- Real photographs of real people at work: owners, teams, coaching sessions, the community. The current Unsplash photos are stand-ins: replace them with your own.
+- Images sit in a frame: radius 16-18px, 1px #EDE8DD border, shadow `0 40px 80px -40px rgba(22,19,14,.35)`, fixed aspect ratio, `object-fit: cover`.
+- Warm, natural daylight sits best with the gold; avoid cold blue casts and heavy filters.
 - Every image has meaningful `alt` text.
 
 ## Do / Don't
 
 **Do**
-- Do make the headline the loudest thing on the page: 800 weight, tight negative tracking, balanced wrapping.
-- Do use teal #0E5E59 for every primary action and link, and #0A4A46 for hover.
-- Do separate sections with #F9FAFB bands and #EAECF0 hairlines.
-- Do end key pages with one dark #0D2624 band carrying a white "on dark" button.
-- Do show focus with the teal 4px halo on `:focus-visible`.
+- Do make the headline the loudest thing on the page.
+- Do use ink #16130E for every primary action, and honey for highlights.
+- Do end every page with one dark #15120C band (`CtaBand`) with a honey button.
+- Do show the BEE logo in the header and footer, never stretched or recoloured.
 
 **Don't**
+- Don't use honey #E8A512 for body text or as text on white (use #8A5D00).
 - Don't introduce other brand colours, gradients, or Tailwind's default palette.
-- Don't use coral for buttons, large fills or body text.
-- Don't add drop shadows to every card; cards are bordered and flat.
-- Don't use a second display font, italics for headings, or weights below 700 for headings.
-- Don't use cartoon illustrations, emoji as icons, or placeholder images; icons are thin line icons (Lucide style, 2px stroke).
-- Don't write "Loading..." text; use skeleton shapes on #F2F4F7.
+- Don't use cartoon bees, bee emoji or honeycomb backgrounds; icons are thin line icons (Lucide style, 2px stroke).
+- Don't write "Loading..." text; use skeleton shapes on #F4F0E6.

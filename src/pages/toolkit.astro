@@ -1,0 +1,117 @@
+---
+/** The toolkit: the four platforms in depth and how they fit. PRERENDERED. */
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import {BRAND, PHOTOS, TOOLS} from '../content/site';
+import Base from '../layouts/Base.astro';
+import {staticContext} from '../server/page';
+
+export const prerender = true;
+
+const {site, viewer} = await staticContext(Astro.request);
+const lede =
+  'BEE Growth, BEE Coach, BEE Community and BEE Content each do a job that used to need a hire or an agency. Together they run your whole operation.';
+---
+
+<Base site={site} viewer={viewer} isStatic title="The toolkit" description={lede} image={PHOTOS.dashboard}>
+  <main>
+    <section class="section" style="padding-block-start: 96px">
+      <div class="wrap hero-split">
+        <div class="stack">
+          <p class="kicker">The toolkit</p>
+          <h1 class="t-page">Four platforms. One growth system.</h1>
+          <p class="t-lead">{lede}</p>
+          <div class="button-row">
+            <a class="button lg" href={BRAND.callHref}>Get help choosing</a>
+            <a class="button lg secondary" href="#growth">Start with BEE Growth</a>
+          </div>
+        </div>
+        <div class="hero-media">
+          <div class="frame">
+            <img src={PHOTOS.dashboard} alt="A laptop on a desk showing a business analytics dashboard" width="1400" height="934" fetchpriority="high" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How they fit together -->
+    <section class="band section secondary">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="stack">
+            <p class="kicker">How they fit</p>
+            <h2 class="t-heading">From first click to loyal client</h2>
+          </div>
+          <p class="t-lead">Each platform owns one stage of the customer journey, so nothing falls between the cracks.</p>
+        </div>
+        <div class="step-row">
+          <div>
+            <span class="rule-num">Attract</span>
+            <h3>BEE Content</h3>
+            <p>Write the campaign: ads, emails, sales pages and posts in your voice.</p>
+          </div>
+          <div>
+            <span class="rule-num">Convert</span>
+            <h3>BEE Growth</h3>
+            <p>Run the ads, reply to every lead in seconds and book the appointment.</p>
+          </div>
+          <div>
+            <span class="rule-num">Deliver</span>
+            <h3>BEE Coach</h3>
+            <p>Run sessions with interactive tools and send branded recaps.</p>
+          </div>
+          <div>
+            <span class="rule-num">Retain</span>
+            <h3>BEE Community</h3>
+            <p>Keep clients engaged with a community, courses and a mobile app.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Each platform -->
+    <section class="section">
+      <div class="wrap">
+        {
+          TOOLS.map(tool => (
+            <article class="tool-row" id={tool.slug} aria-labelledby={`${tool.slug}-title`}>
+              <div class="stack">
+                <span class="icon-tile">
+                  <Icon name={tool.icon} />
+                </span>
+                <span class="badge">{tool.role}</span>
+                <h2 class="t-heading-md" id={`${tool.slug}-title`}>
+                  {tool.name}
+                </h2>
+                <p class="mt-0">{tool.body}</p>
+                <a class="button secondary" href="/contact?topic=tools">
+                  Ask about {tool.name} <Icon name="arrow" />
+                </a>
+              </div>
+              <div class="stack">
+                <h3 class="t-card">What you use it for</h3>
+                <ul class="check-list" style="font-size: 16px">
+                  {tool.useFor.map(item => (
+                    <li>
+                      <Icon name="check" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <p class="replaces">
+                  <strong>Replaces:</strong> {tool.replaces}
+                </p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <CtaBand
+      eyebrow="Not sure where to start?"
+      title="We’ll pick the first tool with you"
+      body="Book a strategy call and we’ll show you which platform pays off fastest for your business."
+    />
+  </main>
+</Base>

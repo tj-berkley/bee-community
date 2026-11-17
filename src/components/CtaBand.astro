@@ -1,0 +1,31 @@
+---
+/** The closing dark band on every page: join, or book a strategy call. */
+import {BRAND} from '../content/site';
+
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  body?: string;
+}
+
+const {
+  eyebrow = 'Your next step',
+  title = 'Stop doing it the hard way',
+  body = 'Join BEE and get the coaching, the community and the tools to grow with less effort.',
+} = Astro.props;
+---
+
+<section class="dark-band section secondary">
+  <div class="wrap cta-split">
+    <div class="stack">
+      <p class="kicker">{eyebrow}</p>
+      <h2 class="t-heading">{title}</h2>
+      <p class="t-lead">{body}</p>
+    </div>
+    <div class="button-row">
+      <a class="button lg on-dark" href="/join" data-guest-only>Join BEE</a>
+      <a class="button lg on-dark" href="/feeds" data-member-only hidden>Open the community</a>
+      <a class="button lg outline-dark" href={BRAND.callHref}>Book a strategy call</a>
+    </div>
+  </div>
+</section>
