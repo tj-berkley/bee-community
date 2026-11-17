@@ -1,7 +1,7 @@
 ---
 /**
- * Contact: BEE's own Smart Form (on the BEE CRM, so every request lands there
- * as a contact), the discovery-call calendar, contact details and an FAQ.
+ * Contact: BEE's own Join BEE form (on the BEE CRM, so every request lands
+ * there as a contact), the phone number, contact details and an FAQ.
  * PRERENDERED.
  */
 import Icon from '../components/Icon.astro';
@@ -37,9 +37,9 @@ const {site, viewer} = await staticContext(Astro.request);
           }
         </dl>
         <div class="stack" style="gap: 12px">
-          <h2 class="t-card">Rather pick a time yourself?</h2>
-          <p class="mt-0">Open the calendar and book a free discovery call at a time that suits you.</p>
-          <a class="button secondary" href={BRAND.callHref}><Icon name="calendar" />Open the calendar</a>
+          <h2 class="t-card">Prefer to talk now?</h2>
+          <p class="mt-0">Give us a call. If we miss you, leave a message and we’ll call you back.</p>
+          <a class="button secondary" href={BRAND.phoneHref}><Icon name="phone" />Call {BRAND.phone}</a>
         </div>
       </div>
 

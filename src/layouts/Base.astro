@@ -213,12 +213,12 @@ const back = encodeURIComponent(`${path}${Astro.url.search}`);
       community's own /join page (never here). Without JavaScript, Join is a
       plain link to /join.
     -->
-    <dialog class="join-dialog" aria-labelledby="join-title" data-join-dialog data-form-url={BRAND.joinFormUrl}>
+    <dialog class="join-dialog" aria-labelledby="join-title" data-join-dialog data-form-url={BRAND.joinFormUrl} data-call-url={BRAND.callHref} data-brand={name}>
       <div class="join-head">
         <img src="/brand/bee-mark-96.png" alt="" width="40" height="40" />
         <div>
-          <h2 class="t-card" id="join-title">Join {name}</h2>
-          <p class="form-note">Tell us a little about your business. Then create your free account.</p>
+          <h2 class="t-card" id="join-title" data-join-text="title">Join {name}</h2>
+          <p class="form-note" data-join-text="note">Tell us a little about your business. Then create your free account.</p>
         </div>
         <button class="join-close" type="button" aria-label="Close" data-join-close><Icon name="close" /></button>
       </div>
@@ -226,9 +226,9 @@ const back = encodeURIComponent(`${path}${Astro.url.search}`);
         <div class="crm-form" data-join-form></div>
         <div class="join-done" data-join-done hidden tabindex="-1">
           <Icon name="check" />
-          <h3>Thanks, we’ve got your details</h3>
-          <p>One last step: create your free account to get into the community.</p>
-          <a class="button lg" href={community('/join')}>Create your free account <Icon name="arrow" /></a>
+          <h3 data-join-text="doneTitle">Thanks, we’ve got your details</h3>
+          <p data-join-text="doneText">One last step: create your free account to get into the community.</p>
+          <a class="button lg" href={community('/join')} data-join-account>Create your free account <Icon name="arrow" /></a>
         </div>
       </div>
       <p class="join-skip" data-join-skip>
@@ -256,6 +256,33 @@ const back = encodeURIComponent(`${path}${Astro.url.search}`);
       const joinDialog = document.querySelector<HTMLDialogElement>('[data-join-dialog]');
       const joinUrl = new URL('/join', COMMUNITY_URL).href;
       const FORM_SCRIPT = 'https://crm.beegr8.com/embed/smart-form.js?v=3';
+      const callUrl = joinDialog?.dataset.callUrl ?? '';
+
+      /** The pop-up's words: Join leads on to account creation, a call does not. */
+      const JOIN_TEXT = {
+        join: {
+          title: `Join ${joinDialog?.dataset.brand ?? 'BEE'}`,
+          note: 'Tell us a little about your business. Then create your free account.',
+          doneTitle: 'Thanks, we’ve got your details',
+          doneText: 'One last step: create your free account to get into the community.',
+        },
+        call: {
+          title: 'Book your discovery call',
+          note: 'Tell us a little about your business and we’ll set up a time to talk.',
+          doneTitle: 'Thanks, you’re on our list',
+          doneText: 'We’ll be in touch within one business day to set up your discovery call.',
+        },
+      } as const;
+      let joinSubmitted = false;
+
+      const setJoinMode = (dialog: HTMLDialogElement, mode: keyof typeof JOIN_TEXT) => {
+        dialog.dataset.mode = mode;
+        for (const el of dialog.querySelectorAll<HTMLElement>('[data-join-text]')) {
+          el.textContent = JOIN_TEXT[mode][el.dataset.joinText as keyof (typeof JOIN_TEXT)['join']];
+        }
+        dialog.querySelector<HTMLElement>('[data-join-account]')!.hidden = mode === 'call';
+        dialog.querySelector<HTMLElement>('[data-join-skip]')!.hidden = mode === 'call' || joinSubmitted;
+      };
 
       const loadJoinForm = (dialog: HTMLDialogElement) => {
         const slot = dialog.querySelector<HTMLElement>('[data-join-form]');
@@ -282,9 +309,12 @@ const back = encodeURIComponent(`${path}${Astro.url.search}`);
           const link = (event.target as HTMLElement).closest<HTMLAnchorElement>('a[href]');
           if (!link || link.closest('[data-join-dialog]')) return;
           // Applicants have already applied: their "Finish joining" goes straight on.
-          if (link.href !== joinUrl || document.body.dataset.viewer === 'applicant') return;
+          const isCall = Boolean(callUrl) && link.href === callUrl;
+          const isJoin = link.href === joinUrl && document.body.dataset.viewer !== 'applicant';
+          if (!isCall && !isJoin) return;
           if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
           event.preventDefault();
+          setJoinMode(joinDialog, isCall ? 'call' : 'join');
           loadJoinForm(joinDialog);
           joinDialog.showModal();
         });
@@ -294,6 +324,7 @@ const back = encodeURIComponent(`${path}${Astro.url.search}`);
           if (event.target === joinDialog) joinDialog.close();
         });
         joinDialog.addEventListener('usezu-form:submitted', () => {
+          joinSubmitted = true;
           joinDialog.querySelector<HTMLElement>('[data-join-form]')!.hidden = true;
           joinDialog.querySelector<HTMLElement>('[data-join-skip]')!.hidden = true;
           const done = joinDialog.querySelector<HTMLElement>('[data-join-done]')!;

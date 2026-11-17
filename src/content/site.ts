@@ -27,8 +27,12 @@ export const BRAND = {
    * their community account. Swap in a dedicated join form when you have one.
    */
   joinFormUrl: 'https://crm.beegr8.com/f/join-bee-m2ff',
-  /** Every "Book a call" button: the discovery-call calendar on the BEE CRM. */
-  callHref: 'https://crm.beegr8.com/c/bee-discovery-call',
+  /**
+   * Every "Book a call" / "Book a discovery call" button. It opens the Join
+   * BEE form in a pop-up (the same one as Join, with call wording); without
+   * JavaScript it opens the form's own page.
+   */
+  callHref: 'https://crm.beegr8.com/f/join-bee-m2ff',
 };
 
 /**
@@ -338,7 +342,7 @@ export const CONTACT = {
   title: 'Talk to the BEE team',
   lede: 'Book a discovery call, ask about coaching or the agency program, or get help choosing the right tools. A real person replies.',
   /** The BEE CRM Smart Form on /contact. */
-  formUrl: 'https://crm.beegr8.com/f/book-discovery-call',
+  formUrl: 'https://crm.beegr8.com/f/join-bee-m2ff',
   details: [
     {label: 'Phone', value: '(808) 353-0040', href: 'tel:+18083530040'},
     {label: 'Replies', value: 'Within one business day', href: null},
