@@ -24,7 +24,7 @@ const {hero, pillars, steps, paths, faq, cta} = HOME;
 <Base site={site} viewer={viewer} isStatic>
   <main>
     <!-- Hero -->
-    <section class="section" style="padding-block-start: 72px">
+    <section class="section hero-top">
       <div class="wrap hero-split">
         <div class="stack">
           <p class="kicker">{hero.eyebrow}</p>
@@ -33,7 +33,7 @@ const {hero, pillars, steps, paths, faq, cta} = HOME;
           <div class="button-row">
             <a class="button lg" href="/join" data-guest-only>Join BEE <Icon name="arrow" /></a>
             <a class="button lg" href="/feeds" data-member-only hidden>Open the community <Icon name="arrow" /></a>
-            <a class="button lg secondary" href={BRAND.callHref}>Book a strategy call</a>
+            <a class="button lg secondary" href={BRAND.callHref}>Book a discovery call</a>
           </div>
         </div>
         <div class="hero-media">
@@ -52,7 +52,7 @@ const {hero, pillars, steps, paths, faq, cta} = HOME;
     </section>
 
     <!-- Facts from the toolkit -->
-    <section class="wrap" style="padding-block: 24px 96px" aria-label="The toolkit in numbers">
+    <section class="wrap facts" aria-label="The toolkit in numbers">
       <div class="stat-strip">
         {
           FACTS.map(fact => (

@@ -1,20 +1,17 @@
 ---
 /**
- * Contact: a message form saved to the Site Database
- * (`POST /site-api/inbox/contact`), contact details and an FAQ. PRERENDERED;
- * `?topic=<topic>` preselects the subject in the browser.
+ * Contact: BEE's own Smart Form (on the BEE CRM, so every request lands there
+ * as a contact), the discovery-call calendar, contact details and an FAQ.
+ * PRERENDERED.
  */
-import Field from '../components/Field.astro';
 import Icon from '../components/Icon.astro';
-import {CONTACT} from '../content/site';
-import {CONTACT_TOPICS, TOPIC_LABELS} from '../lib/forms';
+import {BRAND, CONTACT} from '../content/site';
 import Base from '../layouts/Base.astro';
 import {staticContext} from '../server/page';
 
 export const prerender = true;
 
 const {site, viewer} = await staticContext(Astro.request);
-const topics = CONTACT_TOPICS.map(value => ({value, label: TOPIC_LABELS[value]}));
 ---
 
 <Base site={site} viewer={viewer} isStatic title="Contact" description={CONTACT.lede}>
@@ -27,7 +24,7 @@ const topics = CONTACT_TOPICS.map(value => ({value, label: TOPIC_LABELS[value]})
       </div>
     </header>
 
-    <section class="wrap two-col" style="padding-block-end: 112px">
+    <section class="wrap two-col contact-body">
       <div class="stack" style="gap: 32px">
         <dl class="detail-list" style="width: 100%">
           {
@@ -40,50 +37,23 @@ const topics = CONTACT_TOPICS.map(value => ({value, label: TOPIC_LABELS[value]})
           }
         </dl>
         <div class="stack" style="gap: 12px">
-          <h2 class="t-card">Want to talk it through?</h2>
-          <p class="mt-0">
-            Choose “Booking a strategy call” in the form and tell us about your business. We’ll reply with times that
-            work.
-          </p>
-          <a class="button secondary" href="/toolkit"><Icon name="layers" />See the toolkit first</a>
+          <h2 class="t-card">Rather pick a time yourself?</h2>
+          <p class="mt-0">Open the calendar and book a free discovery call at a time that suits you.</p>
+          <a class="button secondary" href={BRAND.callHref}><Icon name="calendar" />Open the calendar</a>
         </div>
       </div>
 
-      <div class="form-panel">
-        <h2 class="t-card">Send a message</h2>
-        <p class="form-note">We reply within one business day.</p>
-        <form class="site-form" novalidate data-site-form data-endpoint="/site-api/inbox/contact" data-done="contact-done">
-          <Field id="c-topic" name="topic" label="What’s it about?" rule="topic" type="select" options={topics} value="general" full />
-          <Field id="c-name" name="name" label="Your name" rule="name" autocomplete="name" placeholder="Jordan Lee" />
-          <Field id="c-business" name="business" label="Business" rule="businessOptional" autocomplete="organization" placeholder="Lee Consulting" optional />
-          <Field id="c-email" name="email" label="Email" rule="email" type="email" inputmode="email" autocomplete="email" placeholder="name@example.com" full />
-          <Field
-            id="c-message"
-            name="message"
-            label="Message"
-            rule="message"
-            type="textarea"
-            placeholder="Tell us what your business does and where you’d like to save time."
-            hint="10 to 4,000 characters."
-            full
-          />
-          <div class="form-hp" aria-hidden="true">
-            <label for="c-website">Leave this empty</label>
-            <input id="c-website" name="website" tabindex="-1" autocomplete="off" />
-          </div>
-          <div class="form-actions full">
-            <button class="button lg" type="submit" data-pending-label="Sending…">
-              <Icon name="mail" />
-              Send message
-            </button>
-          </div>
-          <p class="form-alert error full" data-form-alert role="alert" hidden></p>
-        </form>
-        <div class="form-done" id="contact-done" tabindex="-1" hidden>
-          <Icon name="check" />
-          <h3>Message sent</h3>
-          <p>Thanks for reaching out. A real person will reply within one business day.</p>
-          <a class="button secondary" href="/toolkit">Explore the toolkit</a>
+      <div class="form-panel" id="form">
+        <h2 class="t-card">Book your discovery call</h2>
+        <p class="form-note">Tell us about your business and we’ll be in touch within one business day.</p>
+        <div class="crm-form">
+          <div data-usezu-form={CONTACT.formUrl} data-header="0" data-bg="transparent" data-min-height="480"></div>
+          <noscript>
+            <p>
+              The form needs JavaScript. You can <a href={CONTACT.formUrl}>open it on its own page</a> or call us on
+              <a href={BRAND.phoneHref}>{BRAND.phone}</a>.
+            </p>
+          </noscript>
         </div>
       </div>
     </section>
@@ -109,13 +79,5 @@ const topics = CONTACT_TOPICS.map(value => ({value, label: TOPIC_LABELS[value]})
   </main>
 </Base>
 
-<script>
-  import {initSiteForms} from '../lib/form-client';
-
-  // `/contact?topic=strategy` picks the subject.
-  const topic = new URLSearchParams(window.location.search).get('topic');
-  const select = document.querySelector<HTMLSelectElement>('#c-topic');
-  if (topic && select && Array.from(select.options).some(o => o.value === topic)) select.value = topic;
-
-  initSiteForms();
-</script>
+<!-- The BEE CRM's Smart Form loader: it fills [data-usezu-form] in place. -->
+<script is:inline async src="https://crm.beegr8.com/embed/smart-form.js?v=3"></script>

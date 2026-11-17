@@ -129,6 +129,7 @@ const back = encodeURIComponent(`${path}${Astro.url.search}`);
         </div>
         <a class="button header-cta" href={BRAND.callHref}>Book a call</a>
         </div>
+        <a class="button small-button header-cta-compact" href={BRAND.callHref}>Book a call</a>
         <button class="menu-button" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu" data-menu-button>
           <Icon name="menu" class="menu-open" />
           <Icon name="close" class="menu-close" />
@@ -144,7 +145,8 @@ const back = encodeURIComponent(`${path}${Astro.url.search}`);
           ))}
         </nav>
         <div class="button-row">
-          <a class="button lg" href={BRAND.callHref}>Book a strategy call</a>
+          <a class="button lg" href={BRAND.callHref}>Book a discovery call</a>
+          <a class="button lg secondary" href={BRAND.phoneHref}><Icon name="phone" />Call {BRAND.phone}</a>
         </div>
         <div class="button-row" data-guest-only hidden={viewer.state !== 'guest' && viewer.state !== 'returning'}>
           <a class="button secondary" href={`/login?redirectTo=${back}`}>Log in</a>
@@ -173,6 +175,7 @@ const back = encodeURIComponent(`${path}${Astro.url.search}`);
               </span>
             </a>
             <p>{BRAND.footer}</p>
+            <p><a class="text-link" href={BRAND.phoneHref}><Icon name="phone" />{BRAND.phone}</a></p>
           </div>
           <div class="footer-cols">
             <nav class="footer-col" aria-labelledby="f-programs">
@@ -180,7 +183,7 @@ const back = encodeURIComponent(`${path}${Astro.url.search}`);
               <a href="/coaching">Business coaching</a>
               <a href="/agency">Build your agency</a>
               <a href="/toolkit">The toolkit</a>
-              <a href={BRAND.callHref}>Book a strategy call</a>
+              <a href={BRAND.callHref}>Book a discovery call</a>
             </nav>
             <nav class="footer-col" aria-labelledby="f-company">
               <h2 id="f-company">Company</h2>

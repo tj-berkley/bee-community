@@ -14,7 +14,7 @@ const {site, viewer} = await staticContext(Astro.request);
 
 <Base site={site} viewer={viewer} isStatic title="Build your own agency" description={AGENCY.lede} image={PHOTOS.team}>
   <main>
-    <section class="section" style="padding-block-start: 96px">
+    <section class="section hero-top">
       <div class="wrap hero-split">
         <div class="stack">
           <p class="kicker">Build your own agency</p>
@@ -23,7 +23,7 @@ const {site, viewer} = await staticContext(Astro.request);
           <div class="button-row">
             <a class="button lg" href="/join" data-guest-only>Start your agency <Icon name="arrow" /></a>
             <a class="button lg" href="/feeds" data-member-only hidden>Open the community <Icon name="arrow" /></a>
-            <a class="button lg secondary" href={`/contact?topic=agency`}>Ask about the program</a>
+            <a class="button lg secondary" href="/contact#form">Ask about the program</a>
           </div>
         </div>
         <div class="hero-media">
@@ -97,7 +97,7 @@ const {site, viewer} = await staticContext(Astro.request);
           </ul>
           <div class="button-row">
             <a class="button lg on-dark" href="/join" data-guest-only>Join BEE</a>
-            <a class="button lg outline-dark" href={BRAND.callHref}>Book a strategy call</a>
+            <a class="button lg outline-dark" href={BRAND.callHref}>Book a discovery call</a>
           </div>
         </article>
       </div>

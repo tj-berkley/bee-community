@@ -15,7 +15,7 @@ const lede =
 
 <Base site={site} viewer={viewer} isStatic title="The toolkit" description={lede} image={PHOTOS.dashboard}>
   <main>
-    <section class="section" style="padding-block-start: 96px">
+    <section class="section hero-top">
       <div class="wrap hero-split">
         <div class="stack">
           <p class="kicker">The toolkit</p>
@@ -84,7 +84,7 @@ const lede =
                   {tool.name}
                 </h2>
                 <p class="mt-0">{tool.body}</p>
-                <a class="button secondary" href="/contact?topic=tools">
+                <a class="button secondary" href="/contact#form">
                   Ask about {tool.name} <Icon name="arrow" />
                 </a>
               </div>
@@ -111,7 +111,7 @@ const lede =
     <CtaBand
       eyebrow="Not sure where to start?"
       title="We’ll pick the first tool with you"
-      body="Book a strategy call and we’ll show you which platform pays off fastest for your business."
+      body="Book a discovery call and we’ll show you which platform pays off fastest for your business."
     />
   </main>
 </Base>

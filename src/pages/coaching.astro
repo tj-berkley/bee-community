@@ -14,14 +14,14 @@ const {site, viewer} = await staticContext(Astro.request);
 
 <Base site={site} viewer={viewer} isStatic title="Business coaching" description={COACHING.lede} image={PHOTOS.workshop}>
   <main>
-    <section class="section" style="padding-block-start: 96px">
+    <section class="section hero-top">
       <div class="wrap hero-split">
         <div class="stack">
           <p class="kicker">Business coaching</p>
           <h1 class="t-page">{COACHING.title}</h1>
           <p class="t-lead">{COACHING.lede}</p>
           <div class="button-row">
-            <a class="button lg" href={BRAND.callHref}>Book a strategy call</a>
+            <a class="button lg" href={BRAND.callHref}>Book a discovery call</a>
             <a class="button lg secondary" href="/join" data-guest-only>Join BEE</a>
           </div>
         </div>
@@ -82,6 +82,6 @@ const {site, viewer} = await staticContext(Astro.request);
 
     <Faq items={COACHING.faq} />
 
-    <CtaBand title="Get your time back" body="Start with a strategy call: we find the biggest time drain in your business and the fastest way to fix it." />
+    <CtaBand title="Get your time back" body="Start with a discovery call: we find the biggest time drain in your business and the fastest way to fix it." />
   </main>
 </Base>

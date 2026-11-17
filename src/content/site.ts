@@ -19,8 +19,11 @@ export const BRAND = {
   description:
     'Business Efficiency Experts (BEE) is a coaching program and community that helps owners run leaner with AI and build their own agency, with BEE’s own marketing, coaching, community and content platforms.',
   footer: 'Coaching, community and an AI-powered toolkit for owners who want to save time, cut costs and grow.',
-  /** Every "Book a strategy call" button. */
-  callHref: '/contact?topic=strategy',
+  /** Shown as written; `phoneHref` is what a phone dials. */
+  phone: '(808) 353-0040',
+  phoneHref: 'tel:+18083530040',
+  /** Every "Book a call" button: the discovery-call calendar on the BEE CRM. */
+  callHref: 'https://crm.beegr8.com/c/bee-discovery-call',
 };
 
 /** Header and footer navigation. Every href is a page of THIS site. */
@@ -318,14 +321,17 @@ export const ABOUT = {
 
 export const CONTACT = {
   title: 'Talk to the BEE team',
-  lede: 'Book a strategy call, ask about coaching or the agency program, or get help choosing the right tools. A real person replies.',
+  lede: 'Book a discovery call, ask about coaching or the agency program, or get help choosing the right tools. A real person replies.',
+  /** The BEE CRM Smart Form on /contact. */
+  formUrl: 'https://crm.beegr8.com/f/book-discovery-call',
   details: [
+    {label: 'Phone', value: '(808) 353-0040', href: 'tel:+18083530040'},
     {label: 'Replies', value: 'Within one business day', href: null},
     {label: 'Members', value: 'Ask in the community', href: '/feeds'},
     {label: 'New here', value: 'Join BEE', href: '/join'},
   ],
   faq: [
-    {q: 'What happens on a strategy call?', a: 'We look at where your time goes, where leads slip away and which tool would pay off first. You leave with a plan, whether or not you join.'},
+    {q: 'What happens on a discovery call?', a: 'We look at where your time goes, where leads slip away and which tool would pay off first. You leave with a plan, whether or not you join.'},
     {q: 'Is BEE for my kind of business?', a: 'If you sell a service and spend too much time on admin, follow-up or marketing, yes. Tell us about your business and we will say honestly.'},
     {q: 'I already use some of the tools. Can I still join?', a: 'Of course. We help you get more out of what you have and fill the gaps.'},
   ],
