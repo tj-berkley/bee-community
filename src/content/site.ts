@@ -22,6 +22,11 @@ export const BRAND = {
   /** Shown as written; `phoneHref` is what a phone dials. */
   phone: '(808) 353-0040',
   phoneHref: 'tel:+18083530040',
+  /**
+   * The BEE CRM form shown when a visitor clicks Join, before they create
+   * their community account. Swap in a dedicated join form when you have one.
+   */
+  joinFormUrl: 'https://crm.beegr8.com/f/book-discovery-call',
   /** Every "Book a call" button: the discovery-call calendar on the BEE CRM. */
   callHref: 'https://crm.beegr8.com/c/bee-discovery-call',
 };
