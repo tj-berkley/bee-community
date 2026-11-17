@@ -5,6 +5,7 @@
  * `GET /site-api/posts/:slug` (HTML already sanitized there). An unknown slug
  * answers a real 404.
  */
+import {community} from '../../content/site';
 import NotFound from '../../components/NotFound.astro';
 import PostRow from '../../components/PostRow.astro';
 import Base from '../../layouts/Base.astro';
@@ -65,7 +66,7 @@ const name = site?.name ?? 'Community';
           <aside class="article-cta">
             <h2>Enjoyed this? Join {name}</h2>
             <p class="muted">Get the conversation, the events and every new post.</p>
-            <a class="button" href="/join">Join for free</a>
+            <a class="button" href={community('/join')}>Join for free</a>
           </aside>
         )}
 

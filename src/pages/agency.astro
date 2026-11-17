@@ -3,7 +3,7 @@
 import CtaBand from '../components/CtaBand.astro';
 import Faq from '../components/Faq.astro';
 import Icon from '../components/Icon.astro';
-import {AGENCY, BRAND, PHOTOS} from '../content/site';
+import {AGENCY, BRAND, community, PHOTOS} from '../content/site';
 import Base from '../layouts/Base.astro';
 import {staticContext} from '../server/page';
 
@@ -21,8 +21,8 @@ const {site, viewer} = await staticContext(Astro.request);
           <h1 class="t-page">{AGENCY.title}</h1>
           <p class="t-lead">{AGENCY.lede}</p>
           <div class="button-row">
-            <a class="button lg" href="/join" data-guest-only>Start your agency <Icon name="arrow" /></a>
-            <a class="button lg" href="/feeds" data-member-only hidden>Open the community <Icon name="arrow" /></a>
+            <a class="button lg" href={community('/join')} data-guest-only>Start your agency <Icon name="arrow" /></a>
+            <a class="button lg" href={community('/feeds')} data-member-only hidden>Open the community <Icon name="arrow" /></a>
             <a class="button lg secondary" href="/contact#form">Ask about the program</a>
           </div>
         </div>
@@ -96,7 +96,7 @@ const {site, viewer} = await staticContext(Astro.request);
             }
           </ul>
           <div class="button-row">
-            <a class="button lg on-dark" href="/join" data-guest-only>Join BEE</a>
+            <a class="button lg on-dark" href={community('/join')} data-guest-only>Join BEE</a>
             <a class="button lg outline-dark" href={BRAND.callHref}>Book a discovery call</a>
           </div>
         </article>

@@ -3,6 +3,7 @@ import {createRootRoute, createRoute, Link, Outlet, useRouterState} from '@tanst
 import {type ChangeEvent, type FormEvent, useState} from 'react';
 
 import {logout, storeFile} from '../platform/browser';
+import {community} from '../content/site';
 import {TOPIC_LABELS, type ContactTopic} from '../lib/forms';
 import {
   type Abilities,
@@ -155,7 +156,7 @@ const rootRoute = createRootRoute({
             <a className="app-nav-link" href="/">
               ← Back to the website
             </a>
-            <a className="app-nav-link" href="/feeds">
+            <a className="app-nav-link" href={community('/feeds')}>
               Community
             </a>
           </div>

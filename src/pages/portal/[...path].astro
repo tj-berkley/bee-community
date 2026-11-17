@@ -9,6 +9,7 @@
  * shell (sidebar, top bar). The ONLY `.astro` file of the app: never add one
  * per screen.
  */
+import {community} from '../../content/site';
 import App from '../../layouts/App.astro';
 import PortalApp from '../../portal/PortalApp';
 import {pageContext} from '../../server/page';
@@ -33,7 +34,7 @@ const back = encodeURIComponent(`${Astro.url.pathname}${Astro.url.search}`);
         <div class="card center">
           <h1>Almost there</h1>
           <p class="lede">The dashboard opens once your membership is active.</p>
-          <a class="button" href="/join">Finish joining</a>
+          <a class="button" href={community('/join')}>Finish joining</a>
         </div>
       </main>
     ) : (
@@ -42,8 +43,8 @@ const back = encodeURIComponent(`${Astro.url.pathname}${Astro.url.search}`);
           <h1>Members only</h1>
           <p class="lede">Sign in to {site?.name ?? 'the community'} to open your dashboard.</p>
           <div class="actions">
-            <a class="button" href={`/login?redirectTo=${back}`}>Log in</a>
-            <a class="button ghost" href="/join">Join</a>
+            <a class="button" href={community(`/login?redirectTo=${back}`)}>Log in</a>
+            <a class="button ghost" href={community('/join')}>Join</a>
             <a class="button link" href="/">Back to the website</a>
           </div>
         </div>

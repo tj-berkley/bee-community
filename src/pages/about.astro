@@ -1,7 +1,7 @@
 ---
 /** About: why BEE exists and what it stands for. PRERENDERED. */
 import CtaBand from '../components/CtaBand.astro';
-import {ABOUT, BRAND, PHOTOS} from '../content/site';
+import {ABOUT, BRAND, community, PHOTOS} from '../content/site';
 import Base from '../layouts/Base.astro';
 import {staticContext} from '../server/page';
 
@@ -80,8 +80,8 @@ const {site, viewer} = await staticContext(Astro.request);
             Inside BEE you’ll find coaching calls, step-by-step playbooks and members sharing the setups, templates and
             numbers that work for them. On the web and in the app.
           </p>
-          <a class="button lg secondary" href="/join" data-guest-only>Join the community</a>
-          <a class="button lg secondary" href="/feeds" data-member-only hidden>Open the community</a>
+          <a class="button lg secondary" href={community('/join')} data-guest-only>Join the community</a>
+          <a class="button lg secondary" href={community('/feeds')} data-member-only hidden>Open the community</a>
         </div>
       </div>
     </section>

@@ -26,6 +26,16 @@ export const BRAND = {
   callHref: 'https://crm.beegr8.com/c/bee-discovery-call',
 };
 
+/**
+ * The community (sign in, join, the feed). Every Community, Log in and Join
+ * button goes here. Keep the App's paths (/feeds, /login, /join): the bare
+ * address shows this website's home page, not the community.
+ */
+export const COMMUNITY_URL = 'https://community.e2.money';
+
+/** A full link into the community, e.g. `community('/join')`. */
+export const community = (path: string) => new URL(path, COMMUNITY_URL).href;
+
 /** Header and footer navigation. Every href is a page of THIS site. */
 export const NAV: NavItem[] = [
   {label: 'Coaching', href: '/coaching'},
@@ -327,8 +337,8 @@ export const CONTACT = {
   details: [
     {label: 'Phone', value: '(808) 353-0040', href: 'tel:+18083530040'},
     {label: 'Replies', value: 'Within one business day', href: null},
-    {label: 'Members', value: 'Ask in the community', href: '/feeds'},
-    {label: 'New here', value: 'Join BEE', href: '/join'},
+    {label: 'Members', value: 'Ask in the community', href: community('/feeds')},
+    {label: 'New here', value: 'Join BEE', href: community('/join')},
   ],
   faq: [
     {q: 'What happens on a discovery call?', a: 'We look at where your time goes, where leads slip away and which tool would pay off first. You leave with a plan, whether or not you join.'},

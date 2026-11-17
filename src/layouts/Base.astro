@@ -11,7 +11,7 @@ import '../styles/global.css';
 import '../styles/site.css';
 
 import Icon from '../components/Icon.astro';
-import {BRAND, NAV, PHOTOS} from '../content/site';
+import {BRAND, community, NAV, PHOTOS} from '../content/site';
 import type {Site, Viewer} from '../lib/types';
 import {initials} from '../lib/format';
 import {siteOrigin} from '../platform/api';
@@ -92,7 +92,7 @@ const back = encodeURIComponent(`${path}${Astro.url.search}`);
         <div class="session" data-session>
           {viewer.state === 'member' ? (
             <>
-              <a class="button ghost small-button" href="/feeds">
+              <a class="button ghost small-button" href={community('/feeds')}>
                 Community
               </a>
               <span class="viewer" title={viewer.name ?? ''}>
@@ -113,15 +113,15 @@ const back = encodeURIComponent(`${path}${Astro.url.search}`);
               )}
             </>
           ) : viewer.state === 'applicant' ? (
-            <a class="button small-button" href="/join">
+            <a class="button small-button" href={community('/join')}>
               Finish joining
             </a>
           ) : (
             <>
-              <a class="button plain small-button" href={`/login?redirectTo=${back}`}>
+              <a class="button plain small-button" href={community(`/login?redirectTo=${back}`)}>
                 Log in
               </a>
-              <a class="button secondary small-button" href="/join">
+              <a class="button secondary small-button" href={community('/join')}>
                 Join
               </a>
             </>
@@ -149,11 +149,11 @@ const back = encodeURIComponent(`${path}${Astro.url.search}`);
           <a class="button lg secondary" href={BRAND.phoneHref}><Icon name="phone" />Call {BRAND.phone}</a>
         </div>
         <div class="button-row" data-guest-only hidden={viewer.state !== 'guest' && viewer.state !== 'returning'}>
-          <a class="button secondary" href={`/login?redirectTo=${back}`}>Log in</a>
-          <a class="button secondary" href="/join">Join</a>
+          <a class="button secondary" href={community(`/login?redirectTo=${back}`)}>Log in</a>
+          <a class="button secondary" href={community('/join')}>Join</a>
         </div>
         <div class="button-row" data-member-only hidden={viewer.state !== 'member'}>
-          <a class="button secondary" href="/feeds">Open the community</a>
+          <a class="button secondary" href={community('/feeds')}>Open the community</a>
           <a class="button secondary" href="/portal">Dashboard</a>
         </div>
       </div>
@@ -194,9 +194,9 @@ const back = encodeURIComponent(`${path}${Astro.url.search}`);
             </nav>
             <nav class="footer-col" aria-labelledby="f-community">
               <h2 id="f-community">Community</h2>
-              <a href="/join">Join BEE</a>
-              <a href={`/login?redirectTo=${back}`}>Log in</a>
-              <a href="/feeds">Community feed</a>
+              <a href={community('/join')}>Join BEE</a>
+              <a href={community(`/login?redirectTo=${back}`)}>Log in</a>
+              <a href={community('/feeds')}>Community feed</a>
             </nav>
           </div>
         </div>
@@ -211,7 +211,17 @@ const back = encodeURIComponent(`${path}${Astro.url.search}`);
       import {logout, refreshSession} from '../platform/browser';
       import {hydrateStaticPage} from '../platform/static-page';
 
-      if (document.body.dataset.static === '1') void hydrateStaticPage();
+      import {COMMUNITY_URL} from '../content/site';
+
+      /** The platform's header script draws short links (/join, /feeds…): send them to the community. */
+      const toCommunity = () => {
+        for (const a of document.querySelectorAll<HTMLAnchorElement>('a[href^="/"]')) {
+          const path = a.getAttribute('href') ?? '';
+          if (/^\/(join|feeds|login|register)(?=$|[/?#])/.test(path)) a.href = new URL(path, COMMUNITY_URL).href;
+        }
+      };
+
+      if (document.body.dataset.static === '1') void hydrateStaticPage().then(toCommunity, toCommunity);
 
       // Phone menu: a disclosure button, closes on Escape and on a link tap.
       const menuButton = document.querySelector<HTMLButtonElement>('[data-menu-button]');

@@ -11,7 +11,7 @@ import CtaBand from '../components/CtaBand.astro';
 import Faq from '../components/Faq.astro';
 import Icon from '../components/Icon.astro';
 import ToolCard from '../components/ToolCard.astro';
-import {BRAND, FACTS, HOME, PHOTOS, TOOLS} from '../content/site';
+import {BRAND, community, FACTS, HOME, PHOTOS, TOOLS} from '../content/site';
 import Base from '../layouts/Base.astro';
 import {staticContext} from '../server/page';
 
@@ -31,8 +31,8 @@ const {hero, pillars, steps, paths, faq, cta} = HOME;
           <h1 class="t-hero">{hero.title}</h1>
           <p class="t-lead">{hero.body}</p>
           <div class="button-row">
-            <a class="button lg" href="/join" data-guest-only>Join BEE <Icon name="arrow" /></a>
-            <a class="button lg" href="/feeds" data-member-only hidden>Open the community <Icon name="arrow" /></a>
+            <a class="button lg" href={community('/join')} data-guest-only>Join BEE <Icon name="arrow" /></a>
+            <a class="button lg" href={community('/feeds')} data-member-only hidden>Open the community <Icon name="arrow" /></a>
             <a class="button lg secondary" href={BRAND.callHref}>Book a discovery call</a>
           </div>
         </div>

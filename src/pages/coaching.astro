@@ -3,7 +3,7 @@
 import CtaBand from '../components/CtaBand.astro';
 import Faq from '../components/Faq.astro';
 import Icon from '../components/Icon.astro';
-import {BRAND, COACHING, PHOTOS} from '../content/site';
+import {BRAND, COACHING, community, PHOTOS} from '../content/site';
 import Base from '../layouts/Base.astro';
 import {staticContext} from '../server/page';
 
@@ -22,7 +22,7 @@ const {site, viewer} = await staticContext(Astro.request);
           <p class="t-lead">{COACHING.lede}</p>
           <div class="button-row">
             <a class="button lg" href={BRAND.callHref}>Book a discovery call</a>
-            <a class="button lg secondary" href="/join" data-guest-only>Join BEE</a>
+            <a class="button lg secondary" href={community('/join')} data-guest-only>Join BEE</a>
           </div>
         </div>
         <div class="hero-media">
