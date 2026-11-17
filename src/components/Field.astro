@@ -1,0 +1,62 @@
+---
+/**
+ * One website form field: a visible label, an optional hint, and an error slot
+ * that `src/lib/form-client.ts` fills in place. `rule` names a rule in
+ * `src/lib/forms.ts` (the server checks the same one).
+ */
+interface Props {
+  id: string;
+  name: string;
+  label: string;
+  rule: string;
+  type?: 'text' | 'email' | 'tel' | 'textarea' | 'select';
+  options?: {value: string; label: string}[];
+  value?: string;
+  hint?: string;
+  placeholder?: string;
+  autocomplete?: string;
+  optional?: boolean;
+  full?: boolean;
+  inputmode?: 'text' | 'email' | 'tel';
+}
+
+const {id, name, label, rule, type = 'text', options = [], value = '', hint, placeholder, autocomplete, optional, full, inputmode} =
+  Astro.props;
+const described = hint ? `${id}-hint` : undefined;
+---
+
+<div class:list={['field', {full}]}>
+  <label for={id}>
+    {label}
+    {optional && <span class="optional"> (optional)</span>}
+  </label>
+  {
+    type === 'textarea' ? (
+      <textarea id={id} name={name} data-rule={rule} placeholder={placeholder} aria-describedby={described}>
+        {value}
+      </textarea>
+    ) : type === 'select' ? (
+      <select id={id} name={name} data-rule={rule} aria-describedby={described}>
+        {options.map(option => (
+          <option value={option.value} selected={option.value === value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    ) : (
+      <input
+        id={id}
+        name={name}
+        type={type}
+        value={value}
+        data-rule={rule}
+        placeholder={placeholder}
+        autocomplete={autocomplete}
+        inputmode={inputmode}
+        aria-describedby={described}
+      />
+    )
+  }
+  {hint && <p class="field-hint" id={`${id}-hint`}>{hint}</p>}
+  <p class="field-error" id={`${id}-error`} role="alert" hidden></p>
+</div>

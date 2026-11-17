@@ -1,0 +1,327 @@
+---
+/**
+ * The home page: PRERENDERED (built once, served as a static file) and made of
+ * sections. Words and events in `src/content/site.ts`.
+ *
+ * Filled in by the browser after load:
+ *   - the countdown to the next event;
+ *   - the visitor (`<Base isStatic>`): members see community links, guests "Join";
+ *   - the latest blog posts (`data-live`, from the community API via the Site API).
+ */
+import Icon from '../components/Icon.astro';
+import TicketForm from '../components/TicketForm.astro';
+import {eventDate, HOME, PHOTOS, SPEAKERS, speakerBySlug, STATS, UPCOMING} from '../content/site';
+import Base from '../layouts/Base.astro';
+import {staticContext} from '../server/page';
+
+export const prerender = true;
+
+const {site, viewer} = await staticContext(Astro.request);
+const next = UPCOMING[0];
+const nextSpeakers = next ? next.speakers.map(speakerBySlug).filter(s => s !== undefined) : [];
+---
+
+<Base site={site} viewer={viewer} isStatic>
+  <main>
+    <!-- Hero: the next event up top -->
+    <section class="section" style="padding-block-start: 72px">
+      <div class="wrap hero-split">
+        <div class="stack">
+          <p class="kicker">{HOME.hero.eyebrow}</p>
+          <h1 class="t-hero">{HOME.hero.title}</h1>
+          <p class="t-lead">{HOME.hero.body}</p>
+          <div class="button-row">
+            <a class="button lg" href="#tickets"><Icon name="ticket" />Get your ticket</a>
+            <a class="button lg secondary" href="/schedule">See all events</a>
+          </div>
+        </div>
+
+        {
+          next && (
+            <div class="hero-media">
+              <div class="frame">
+                <img src={next.photo} alt="Business owners listening to a speaker at a Saving America Money breakfast" width="1400" height="1050" fetchpriority="high" />
+              </div>
+              <div class="next-panel" data-countdown={next.start}>
+                <p class="badge dot">Next event · {next.kind}</p>
+                <h2 class="t-card" style="margin-top: 10px">{next.title}</h2>
+                <div class="next-meta" style="margin-top: 8px">
+                  <span><Icon name="calendar" />{eventDate(next)}</span>
+                  <span><Icon name="clock" />{next.time}</span>
+                  <span><Icon name="pin" />{next.city}</span>
+                </div>
+                <ul class="countdown" aria-label="Time until the event" data-countdown-units>
+                  <li><strong data-unit="days">--</strong><span>days</span></li>
+                  <li><strong data-unit="hours">--</strong><span>hours</span></li>
+                  <li><strong data-unit="minutes">--</strong><span>min</span></li>
+                  <li><strong data-unit="seconds">--</strong><span>sec</span></li>
+                </ul>
+                <p class="form-note" data-countdown-done hidden>Happening now. See you there!</p>
+              </div>
+            </div>
+          )
+        }
+      </div>
+    </section>
+
+    <!-- Numbers -->
+    <section class="wrap" style="padding-block-end: 96px" aria-label="Our events in numbers">
+      <div class="stat-strip">
+        {
+          STATS.map(stat => (
+            <div>
+              <span class="figure">{stat.value}</span>
+              <span class="figure-label">{stat.label}</span>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- What to expect -->
+    <section class="band section secondary">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="stack">
+            <p class="kicker">The format</p>
+            <h2 class="t-heading">{HOME.expect.title}</h2>
+          </div>
+          <p class="t-lead">{HOME.expect.lead}</p>
+        </div>
+        <div class="rule-grid">
+          {
+            HOME.expect.items.map((item, i) => (
+              <div>
+                <span class="rule-num">0{i + 1}</span>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- The next event in full, with the ticket form -->
+    {
+      next && (
+        <section class="section" aria-labelledby="next-title">
+          <div class="wrap two-col">
+            <div class="stack">
+              <p class="kicker">{eventDate(next)} · {next.city}</p>
+              <h2 class="t-heading-md" id="next-title">{next.title}</h2>
+              <p>{next.summary}</p>
+              <div class="meta-line">
+                <span><Icon name="clock" />{next.time}</span>
+                <span><Icon name="pin" />{next.venue}</span>
+                <span><Icon name="users" />{next.audience}</span>
+              </div>
+              <p>
+                <span class="price">{next.price}</span> <span class="form-note">{next.priceNote}</span>
+              </p>
+              {next.agenda && (
+                <ol class="agenda" style="width: 100%">
+                  {next.agenda.map(item => (
+                    <li>
+                      <time>{item.time}</time>
+                      <span>{item.title}</span>
+                    </li>
+                  ))}
+                </ol>
+              )}
+              <div class="speaker-chips">
+                {nextSpeakers.map(s => (
+                  <a class="speaker-chip" href={`/speakers#${s.slug}`}>
+                    <img src={s.photo} alt="" width="26" height="26" loading="lazy" />
+                    {s.name}
+                  </a>
+                ))}
+              </div>
+            </div>
+            <TicketForm event={next.slug} />
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Photos -->
+    <section class="band section secondary">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="stack">
+            <p class="kicker">Gallery</p>
+            <h2 class="t-heading">Early mornings, full rooms</h2>
+          </div>
+          <a class="text-link" href="/gallery">See the gallery <Icon name="arrow" /></a>
+        </div>
+        <div class="photo-strip">
+          <img src={PHOTOS.audience} alt="Business owners seated close together, listening to a speaker" loading="lazy" width="1400" height="930" />
+          <img src={PHOTOS.coffee} alt="Three people toast with coffee cups" loading="lazy" width="700" height="700" />
+          <img src={PHOTOS.tables} alt="Attendees laughing and talking around a long table" loading="lazy" width="700" height="700" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Speakers -->
+    <section class="section secondary">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="stack">
+            <p class="kicker">Speakers</p>
+            <h2 class="t-heading">Owners talking to owners</h2>
+          </div>
+          <a class="text-link" href="/speakers">All speakers <Icon name="arrow" /></a>
+        </div>
+        <div class="speaker-grid">
+          {
+            SPEAKERS.map(s => (
+              <article class="speaker">
+                <img src={s.photo} alt={`Portrait of ${s.name}`} loading="lazy" width="600" height="600" />
+                <h3>{s.name}</h3>
+                <p class="role">{s.role}</p>
+                <p class="talk">Talk: {s.talk}</p>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="band section secondary">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="stack">
+            <p class="kicker">From the room</p>
+            <h2 class="t-heading">Why owners come back</h2>
+          </div>
+        </div>
+        <div class="quote-grid">
+          {
+            HOME.testimonials.map(t => (
+              <figure class="tquote">
+                <blockquote>“{t.text}”</blockquote>
+                <figcaption>
+                  <span class="avatar-initial" aria-hidden="true">{t.name.charAt(0)}</span>
+                  <span>
+                    <strong>{t.name}</strong>
+                    {t.role}
+                  </span>
+                </figcaption>
+              </figure>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Latest blog posts (community API), hidden when there are none -->
+    <section class="section secondary" data-live="posts" hidden>
+      <div class="wrap">
+        <div class="section-head">
+          <div class="stack">
+            <p class="kicker">Blog</p>
+            <h2 class="t-heading">Fresh from the blog</h2>
+          </div>
+          <a class="text-link" href="/blog">All posts <Icon name="arrow" /></a>
+        </div>
+        <div class="card-grid" data-list></div>
+      </div>
+    </section>
+
+    <!-- Closing dark band -->
+    <section class="dark-band section secondary">
+      <div class="wrap cta-split">
+        <div class="stack">
+          <p class="kicker">Don’t get locked out</p>
+          <h2 class="t-heading">{HOME.cta.title}</h2>
+          <p class="t-lead">{HOME.cta.body}</p>
+        </div>
+        <div class="button-row">
+          <a class="button lg on-dark" href="#tickets">Get your ticket</a>
+          <a class="button lg outline-dark" href="/join" data-guest-only>Join the community</a>
+          <a class="button lg outline-dark" href="/feeds" data-member-only hidden>Open the community</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<script>
+  import {formatDate} from '../lib/format';
+  import type {PostsPage} from '../lib/types';
+
+  // ---- countdown to the next event --------------------------------------
+  const panel = document.querySelector<HTMLElement>('[data-countdown]');
+  if (panel) {
+    const target = new Date(panel.dataset.countdown!).getTime();
+    const units = panel.querySelector<HTMLElement>('[data-countdown-units]')!;
+    const done = panel.querySelector<HTMLElement>('[data-countdown-done]')!;
+    const set = (unit: string, n: number) => {
+      const el = units.querySelector<HTMLElement>(`[data-unit="${unit}"]`);
+      if (el) el.textContent = String(n).padStart(2, '0');
+    };
+    const tick = () => {
+      const left = Math.max(0, target - Date.now());
+      if (left === 0) {
+        units.hidden = true;
+        done.hidden = false;
+        return false;
+      }
+      const s = Math.floor(left / 1000);
+      set('days', Math.floor(s / 86400));
+      set('hours', Math.floor((s % 86400) / 3600));
+      set('minutes', Math.floor((s % 3600) / 60));
+      set('seconds', s % 60);
+      return true;
+    };
+    if (tick()) {
+      const timer = window.setInterval(() => {
+        if (!tick()) window.clearInterval(timer);
+      }, 1000);
+    }
+  }
+
+  // ---- latest posts --------------------------------------------------------
+  /** One element with text: never HTML from an answer. */
+  const el = <K extends keyof HTMLElementTagNameMap>(tag: K, className = '', text = '') => {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text) node.textContent = text;
+    return node;
+  };
+
+  async function loadPosts() {
+    const section = document.querySelector<HTMLElement>('[data-live="posts"]');
+    const list = section?.querySelector<HTMLElement>('[data-list]');
+    if (!section || !list) return;
+    try {
+      const res = await fetch('/site-api/posts?perPage=3', {headers: {accept: 'application/json'}});
+      if (!res.ok) return;
+      const data = (await res.json()) as PostsPage;
+      for (const post of data.posts) {
+        const card = el('a', 'ecard');
+        card.href = `/blog/${encodeURIComponent(post.slug)}`;
+        const media = el('div', 'ecard-media');
+        if (post.coverUrl) {
+          const img = el('img');
+          img.src = post.coverUrl;
+          img.alt = '';
+          img.loading = 'lazy';
+          media.append(img);
+        }
+        card.append(media);
+        const body = el('div', 'ecard-body');
+        body.append(el('h3', 't-card', post.title));
+        if (post.excerpt) body.append(el('p', '', post.excerpt.slice(0, 120)));
+        body.append(el('p', 'form-note', formatDate(post.publishedAt)));
+        card.append(body);
+        list.append(card);
+      }
+      if (data.posts.length > 0) section.hidden = false;
+    } catch {
+      // The section stays hidden: the page is complete without it.
+    }
+  }
+  void loadPosts();
+</script>

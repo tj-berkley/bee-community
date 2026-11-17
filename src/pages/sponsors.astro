@@ -1,0 +1,170 @@
+---
+/** Sponsors: our partners, and how to sponsor. PRERENDERED. */
+import Icon from '../components/Icon.astro';
+import {PHOTOS, SPONSOR_TIERS, SPONSORS} from '../content/site';
+import Base from '../layouts/Base.astro';
+import {staticContext} from '../server/page';
+
+export const prerender = true;
+
+const {site, viewer} = await staticContext(Astro.request);
+
+const WHY = [
+  {title: 'The right room', body: 'Every seat is an owner or operator of a local service business. The people who sign checks, not interns.'},
+  {title: 'One per trade', body: 'Tables are seated with non-competing pros, so introductions turn into referrals instead of rivalries.'},
+  {title: 'Lasting reach', body: 'Partners appear on event slides, this website and our recaps, not just on the morning of the event.'},
+];
+---
+
+<Base
+  site={site}
+  viewer={viewer}
+  isStatic
+  title="Sponsors"
+  description="The partners behind Saving America Money events, and how your business can sponsor a breakfast, a table or the full series.">
+  <main>
+    <section class="section" style="padding-block-start: 96px">
+      <div class="wrap hero-split">
+        <div class="stack">
+          <p class="kicker">Sponsors</p>
+          <h1 class="t-page">Put your name in the room</h1>
+          <p class="t-lead">
+            Sponsors keep the coffee hot and the tickets affordable. In return they meet a room of local owners who buy
+            print, signage, software, insurance, financing and everything else a growing business needs.
+          </p>
+          <div class="button-row">
+            <a class="button lg" href="/contact?topic=sponsoring">Become a sponsor</a>
+            <a class="button lg secondary" href="#packages">See packages</a>
+          </div>
+        </div>
+        <div class="hero-media">
+          <div class="frame">
+            <img src={PHOTOS.crowd} alt="A crowd of attendees mingling in a bright event hall" width="1400" height="1050" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band section secondary" aria-labelledby="partners-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="stack">
+            <p class="kicker">Our partners</p>
+            <h2 class="t-heading-md" id="partners-title">Thanks to the businesses behind every breakfast</h2>
+          </div>
+        </div>
+        <div class="logo-wall">
+          {
+            SPONSORS.map(s => (
+              <div>
+                <span>{s.kind}</span>
+                <strong>{s.name}</strong>
+                <p>{s.blurb}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="section secondary">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="stack">
+            <p class="kicker">Why sponsor</p>
+            <h2 class="t-heading">A room you can’t buy an ad in</h2>
+          </div>
+        </div>
+        <div class="rule-grid">
+          {
+            WHY.map(item => (
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="band section secondary" id="packages" aria-labelledby="packages-title" style="scroll-margin-top: 70px">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="stack">
+            <p class="kicker">Packages</p>
+            <h2 class="t-heading-md" id="packages-title">Three ways to sponsor</h2>
+          </div>
+          <p class="t-lead">Prices cover one Missouri city. Multi-city deals on request.</p>
+        </div>
+        <div class="tier-grid">
+          {
+            SPONSOR_TIERS.map(tier => (
+              <article class:list={['tier', {featured: tier.featured}]}>
+                <div class="button-row" style="justify-content: space-between; align-items: center">
+                  <h3>{tier.name}</h3>
+                  {tier.featured && <span class="badge spark">Most popular</span>}
+                </div>
+                <div>
+                  <span class="figure">{tier.price}</span>
+                  <span class="per">{tier.per}</span>
+                </div>
+                <ul>
+                  {tier.items.map(item => (
+                    <li>
+                      <Icon name="check" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <a class:list={['button lg', tier.featured ? 'on-dark' : 'secondary']} href="/contact?topic=sponsoring">
+                  Ask about {tier.name.toLowerCase()}
+                </a>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="section secondary">
+      <div class="wrap two-col">
+        <div class="stack">
+          <p class="kicker">How it works</p>
+          <h2 class="t-heading-md">Sponsoring takes one email</h2>
+        </div>
+        <ol class="rule-grid" style="list-style: none; margin: 0; padding: 0">
+          <li>
+            <span class="rule-num">01</span>
+            <h3>Tell us your goal</h3>
+            <p>Which city, which audience, and what you want people to remember.</p>
+          </li>
+          <li>
+            <span class="rule-num">02</span>
+            <h3>Pick a package</h3>
+            <p>We send a one-page agreement and an invoice. No long contracts.</p>
+          </li>
+          <li>
+            <span class="rule-num">03</span>
+            <h3>Show up</h3>
+            <p>We handle slides, signage and seating. You meet the room.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="dark-band section secondary">
+      <div class="wrap cta-split">
+        <div class="stack">
+          <p class="kicker">Next step</p>
+          <h2 class="t-heading">Let’s talk sponsorship</h2>
+          <p class="t-lead">Send a note and we’ll reply within one business day with dates and availability.</p>
+        </div>
+        <div class="button-row">
+          <a class="button lg on-dark" href="/contact?topic=sponsoring">Become a sponsor</a>
+          <a class="button lg outline-dark" href="/schedule">See upcoming events</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>
